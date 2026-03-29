@@ -4,7 +4,7 @@ import { useState } from "react";
 import { TVShow } from "@/types/tvmaze";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Calendar, PlayCircle, Star, Tv, Info, Clock, Share2, Heart, ExternalLink } from "lucide-react";
+import { Calendar, PlayCircle, Star, Tv, Info, Clock, Share2, Heart } from "lucide-react";
 import Image from "next/image";
 import { DurationDisplay } from "./duration-display";
 import { Slider } from "@/components/ui/slider";
@@ -105,11 +105,6 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                 ))}
               </div>
             </div>
-
-            <div 
-              className="text-muted-foreground/80 leading-relaxed text-xl prose prose-invert max-w-none font-medium italic"
-              dangerouslySetInnerHTML={{ __html: show.summary || "No summary available." }}
-            />
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10 border-y border-white/5">
@@ -199,7 +194,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
             </Card>
 
             <div className="flex items-center justify-center gap-2 py-4 text-muted-foreground/50 text-xs font-bold uppercase tracking-widest">
-              <Info className="h-4 w-4" /> Calculated for optimized viewing flow
+              <span className="flex items-center gap-1.5"><Info className="h-4 w-4" /> Calculated for optimized viewing flow</span>
             </div>
           </div>
         </div>
