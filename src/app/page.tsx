@@ -2,7 +2,8 @@
 
 import { SearchBar } from "@/components/binge-calculator/search-bar";
 import { useRouter } from "next/navigation";
-import { Tv, Flame, Info, Clapperboard, MonitorPlay, HelpCircle } from "lucide-react";
+import Link from "next/link";
+import { Tv, Flame, Clapperboard, MonitorPlay, HelpCircle } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -26,14 +27,14 @@ export default function Home() {
 
       {/* Navigation */}
       <header className="container mx-auto px-6 py-8 relative z-50 flex items-center justify-between">
-        <div className="flex items-center gap-3 group cursor-pointer" onClick={() => router.push('/')}>
+        <Link href="/" className="flex items-center gap-3 group">
           <div className="bg-primary p-3 rounded-2xl shadow-xl shadow-primary/40 group-hover:rotate-6 transition-all duration-500">
             <MonitorPlay className="h-7 w-7 text-white" />
           </div>
           <span className="text-2xl font-black tracking-tight text-white uppercase italic">
             Binge<span className="text-primary">Mate</span>
           </span>
-        </div>
+        </Link>
         <nav className="hidden md:flex items-center gap-8">
           <button className="text-sm font-semibold text-muted-foreground hover:text-white transition-colors flex items-center gap-2">
             <Flame className="h-4 w-4" /> Trending
