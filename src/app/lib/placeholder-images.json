@@ -1,0 +1,11 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-bg",
+      "description": "Abstract blue tech pattern",
+      "imageUrl": "https://picsum.photos/seed/bingemate-hero/1200/600",
+      "imageHint": "abstract blue tech"
+    }
+  ]
+}
