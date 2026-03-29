@@ -19,11 +19,17 @@ interface ShowDetailsProps {
 export function ShowDetails({ show }: ShowDetailsProps) {
   const [hoursPerDay, setHoursPerDay] = useState([2]);
   
-  const totalEpisodes = show._embedded?.episodes.length || 0;
-  const totalRuntimeMinutes = show._embedded?.episodes.reduce((acc, ep) => acc + (ep.runtime || show.averageRuntime || 0), 0) || 0;
+  // Calculation Logic:
+  // 1. Get total episode count
+  // 2. Sum up runtimes. Fallback to averageRuntime, then a hard default of 30 if data is sparse.
+  const episodes = show._embedded?.episodes || [];
+  const totalEpisodes = episodes.length;
+  const totalRuntimeMinutes = episodes.reduce((acc, ep) => {
+    return acc + (ep.runtime || show.averageRuntime || 30);
+  }, 0);
   
   const totalHours = totalRuntimeMinutes / 60;
-  const daysToFinish = Math.ceil(totalHours / hoursPerDay[0]);
+  const daysToFinish = totalHours > 0 ? Math.ceil(totalHours / hoursPerDay[0]) : 0;
   const finishDate = addDays(new Date(), daysToFinish);
 
   return (
@@ -99,7 +105,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
               <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold">Avg Runtime</p>
               <div className="flex items-center gap-2 text-white">
                 <Clock className="h-4 w-4 text-primary" />
-                <span className="font-semibold">{show.averageRuntime || show._embedded?.episodes[0]?.runtime || "N/A"} min</span>
+                <span className="font-semibold">{show.averageRuntime || (episodes[0]?.runtime) || "30"} min</span>
               </div>
             </div>
             <div className="space-y-1">
@@ -118,7 +124,6 @@ export function ShowDetails({ show }: ShowDetailsProps) {
             </div>
             <DurationDisplay totalMinutes={totalRuntimeMinutes} />
             
-            {/* Binge Planner Section */}
             <Card className="p-6 bg-white/5 border-white/10 space-y-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
