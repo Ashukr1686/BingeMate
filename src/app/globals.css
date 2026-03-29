@@ -23,7 +23,7 @@
     --border: 240 10% 25%;
     --input: 240 10% 25%;
     --ring: 240 86% 61%;
-    --radius: 0.75rem;
+    --radius: 1rem;
     --chart-1: 240 86% 61%;
     --chart-2: 200 18% 84%;
     --chart-3: 197 37% 24%;
@@ -43,9 +43,13 @@
 }
 
 .glass-panel {
-  @apply bg-card/50 backdrop-blur-md border border-white/5;
+  @apply bg-card/40 backdrop-blur-xl border border-white/10 shadow-2xl;
 }
 
-.binge-gradient {
-  background: linear-gradient(135deg, #4646F0 0%, #2A2A9D 100%);
+.hero-gradient {
+  background: radial-gradient(circle at top center, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+}
+
+.binge-card-hover {
+  @apply transition-all duration-300 hover:scale-[1.02] hover:shadow-primary/20 hover:shadow-xl;
 }
