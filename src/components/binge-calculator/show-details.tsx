@@ -116,10 +116,16 @@ export function ShowDetails({ show }: ShowDetailsProps) {
           </div>
 
           <div className="space-y-6 pt-4">
-            <div className="flex items-center gap-3">
-              <div className="h-1 w-12 bg-primary rounded-full" />
-              <h2 className="text-xl font-bold text-white uppercase tracking-widest">Total Binge Duration</h2>
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <div className="h-1 w-12 bg-primary rounded-full" />
+                <h2 className="text-xl font-bold text-white uppercase tracking-widest">Total Binge Duration</h2>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                This represents the total time required to watch the entire series back-to-back, calculated by summing up the runtime of every single episode.
+              </p>
             </div>
+            
             <DurationDisplay totalMinutes={totalRuntimeMinutes} />
             
             <Card className="p-6 bg-white/5 border-white/10 space-y-6">
@@ -128,7 +134,9 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                   <h3 className="text-lg font-bold text-white flex items-center gap-2">
                     <Clock className="h-5 w-5 text-primary" /> Binge Planner
                   </h3>
-                  <p className="text-sm text-muted-foreground">Adjust your daily watching hours to see your finish date.</p>
+                  <p className="text-sm text-muted-foreground">
+                    Customize your viewing schedule. Adjust your daily watching goal to see an estimated completion date for the whole series.
+                  </p>
                 </div>
                 <div className="text-right">
                   <span className="text-2xl font-black text-primary">{hoursPerDay[0]}h</span>
