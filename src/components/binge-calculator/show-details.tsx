@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -19,11 +18,10 @@ interface ShowDetailsProps {
 export function ShowDetails({ show }: ShowDetailsProps) {
   const [hoursPerDay, setHoursPerDay] = useState([2]);
   
-  // Calculation Logic:
-  // 1. Get total episode count
-  // 2. Sum up runtimes. Fallback to averageRuntime, then a hard default of 30 if data is sparse.
   const episodes = show._embedded?.episodes || [];
   const totalEpisodes = episodes.length;
+  
+  // Summing up exact runtimes where available, else using averageRuntime or a 30m default.
   const totalRuntimeMinutes = episodes.reduce((acc, ep) => {
     return acc + (ep.runtime || show.averageRuntime || 30);
   }, 0);
@@ -105,7 +103,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
               <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold">Avg Runtime</p>
               <div className="flex items-center gap-2 text-white">
                 <Clock className="h-4 w-4 text-primary" />
-                <span className="font-semibold">{show.averageRuntime || (episodes[0]?.runtime) || "30"} min</span>
+                <span className="font-semibold">{show.averageRuntime || 30} min</span>
               </div>
             </div>
             <div className="space-y-1">
@@ -162,7 +160,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
             </Card>
 
             <p className="text-center text-sm text-muted-foreground italic flex items-center justify-center gap-2">
-              <Info className="h-4 w-4" /> Estimated time to watch all {totalEpisodes} episodes back-to-back.
+              <Info className="h-4 w-4" /> Calculated based on total episode runtimes and your daily binge goals.
             </p>
           </div>
         </div>
