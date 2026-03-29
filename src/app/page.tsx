@@ -2,7 +2,13 @@
 
 import { SearchBar } from "@/components/binge-calculator/search-bar";
 import { useRouter } from "next/navigation";
-import { Tv, Flame, Info, Clapperboard, MonitorPlay } from "lucide-react";
+import { Tv, Flame, Info, Clapperboard, MonitorPlay, HelpCircle } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function Home() {
   const router = useRouter();
@@ -32,9 +38,9 @@ export default function Home() {
           <button className="text-sm font-semibold text-muted-foreground hover:text-white transition-colors flex items-center gap-2">
             <Flame className="h-4 w-4" /> Trending
           </button>
-          <button className="text-sm font-semibold text-muted-foreground hover:text-white transition-colors flex items-center gap-2">
-            <Info className="h-4 w-4" /> How it Works
-          </button>
+          <a href="#faq" className="text-sm font-semibold text-muted-foreground hover:text-white transition-colors flex items-center gap-2">
+            <HelpCircle className="h-4 w-4" /> FAQ
+          </a>
         </nav>
       </header>
 
@@ -59,8 +65,66 @@ export default function Home() {
           <SearchBar onSelect={handleShowSelect} />
         </div>
 
-        {/* Quick Stats / Social Proof */}
-        <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-12 text-center opacity-40 hover:opacity-100 transition-opacity duration-500">
+        {/* FAQ Section */}
+        <div id="faq" className="mt-32 w-full max-w-3xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
+          <div className="text-center space-y-2">
+            <h2 className="text-3xl font-black text-white tracking-tight">Common Questions</h2>
+            <p className="text-muted-foreground font-medium">Everything you need to know about BingeMate</p>
+          </div>
+
+          <Accordion type="single" collapsible className="w-full glass-panel rounded-3xl p-6 border-white/5">
+            <AccordionItem value="item-1" className="border-white/5">
+              <AccordionTrigger className="text-white font-bold text-lg hover:text-primary transition-colors hover:no-underline">
+                How is the Total Binge Duration calculated?
+              </AccordionTrigger>
+              <AccordionContent className="text-muted-foreground text-base leading-relaxed">
+                We aggregate data for every single episode released for a show. The total duration is the sum of each episode's runtime. If specific episode data is missing, we use the show's reported average runtime to ensure the estimate remains as accurate as possible.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-2" className="border-white/5">
+              <AccordionTrigger className="text-white font-bold text-lg hover:text-primary transition-colors hover:no-underline text-left">
+                Can you give me an example of a binge calculation?
+              </AccordionTrigger>
+              <AccordionContent className="text-muted-foreground text-base leading-relaxed space-y-4">
+                <p>Absolutely! Let's take a classic hour-long drama as an example:</p>
+                <div className="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-bold uppercase tracking-wider text-primary">Input</span>
+                    <span className="text-xs text-muted-foreground">62 Episodes @ 60 min each</span>
+                  </div>
+                  <div className="h-px bg-white/5" />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs font-black text-white/40 uppercase">Total Minutes</p>
+                      <p className="text-xl font-black text-white">3,720 min</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-white/40 uppercase">Total Hours</p>
+                      <p className="text-xl font-black text-white">62 hours</p>
+                    </div>
+                  </div>
+                  <div className="pt-2">
+                    <p className="text-xs font-black text-primary uppercase">BingeMate Result</p>
+                    <p className="text-2xl font-black text-white">2 Days, 14 Hours</p>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-3" className="border-none">
+              <AccordionTrigger className="text-white font-bold text-lg hover:text-primary transition-colors hover:no-underline">
+                What is the Smart Binge Planner?
+              </AccordionTrigger>
+              <AccordionContent className="text-muted-foreground text-base leading-relaxed">
+                The Smart Binge Planner allows you to set a daily "watching cap." Instead of watching 24/7, you can tell us you have 2.5 hours a day, and we'll tell you exactly which calendar date you'll reach the series finale!
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+
+        {/* Quick Stats */}
+        <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-12 text-center opacity-40 hover:opacity-100 transition-opacity duration-500 mb-20">
           <div>
             <div className="text-3xl font-black text-white">70k+</div>
             <div className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Shows Tracked</div>
