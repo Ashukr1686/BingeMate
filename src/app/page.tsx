@@ -1,21 +1,15 @@
+
 "use client";
 
-import { useState } from "react";
 import { SearchBar } from "@/components/binge-calculator/search-bar";
-import { ShowDetails } from "@/components/binge-calculator/show-details";
-import { getShowDetails } from "@/lib/tvmaze";
-import { TVShow } from "@/types/tvmaze";
+import { useRouter } from "next/navigation";
 import { Tv, Flame, Info } from "lucide-react";
 
 export default function Home() {
-  const [selectedShow, setSelectedShow] = useState<TVShow | null>(null);
-  const [isDetailLoading, setIsDetailLoading] = useState(false);
+  const router = useRouter();
 
-  const handleShowSelect = async (id: number) => {
-    setIsDetailLoading(true);
-    const details = await getShowDetails(id);
-    setSelectedShow(details);
-    setIsDetailLoading(false);
+  const handleShowSelect = (id: number) => {
+    router.push(`/show/${id}`);
   };
 
   return (
@@ -27,7 +21,7 @@ export default function Home() {
 
       {/* Header/Nav */}
       <header className="container mx-auto px-4 py-8 relative z-10 flex items-center justify-between">
-        <div className="flex items-center gap-3 group cursor-pointer">
+        <div className="flex items-center gap-3 group cursor-pointer" onClick={() => router.push('/')}>
           <div className="bg-primary p-2.5 rounded-xl shadow-lg shadow-primary/30 group-hover:rotate-12 transition-transform">
             <Tv className="h-6 w-6 text-white" />
           </div>
@@ -46,33 +40,19 @@ export default function Home() {
       </header>
 
       {/* Hero / Search Section */}
-      <section className={`container mx-auto px-4 relative z-10 transition-all duration-700 ease-in-out ${selectedShow ? 'pt-8 pb-12' : 'pt-32 pb-48'}`}>
-        {!selectedShow && (
-          <div className="text-center max-w-3xl mx-auto space-y-6 mb-12 animate-in fade-in zoom-in-95 duration-700">
-            <h1 className="text-6xl md:text-7xl font-black text-white tracking-tighter leading-tight">
-              Ready to <span className="text-primary">Binge?</span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Plan your next ultimate viewing session. Search for any TV series and calculate exactly how long it takes to watch it all.
-            </p>
-          </div>
-        )}
+      <section className="container mx-auto px-4 relative z-10 pt-32 pb-48">
+        <div className="text-center max-w-3xl mx-auto space-y-6 mb-12 animate-in fade-in zoom-in-95 duration-700">
+          <h1 className="text-6xl md:text-7xl font-black text-white tracking-tighter leading-tight">
+            Ready to <span className="text-primary">Binge?</span>
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Plan your next ultimate viewing session. Search for any TV series and calculate exactly how long it takes to watch it all.
+          </p>
+        </div>
         
         <div className="max-w-3xl mx-auto">
           <SearchBar onSelect={handleShowSelect} />
         </div>
-      </section>
-
-      {/* Content Section */}
-      <section className="container mx-auto px-4 pb-20 relative z-10">
-        {isDetailLoading ? (
-          <div className="flex flex-col items-center justify-center py-24 space-y-4">
-            <div className="h-12 w-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-            <p className="text-primary font-bold animate-pulse">Calculating Binge Data...</p>
-          </div>
-        ) : selectedShow ? (
-          <ShowDetails show={selectedShow} />
-        ) : null}
       </section>
 
       {/* Footer */}

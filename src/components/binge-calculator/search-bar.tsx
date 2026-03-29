@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -7,9 +8,10 @@ import { Card } from "@/components/ui/card";
 import { searchShows } from "@/lib/tvmaze";
 import { SearchResult } from "@/types/tvmaze";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface SearchBarProps {
-  onSelect: (id: number) => void;
+  onSelect?: (id: number) => void;
 }
 
 export function SearchBar({ onSelect }: SearchBarProps) {
@@ -18,6 +20,7 @@ export function SearchBar({ onSelect }: SearchBarProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -46,6 +49,16 @@ export function SearchBar({ onSelect }: SearchBarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleSelect = (id: number) => {
+    if (onSelect) {
+      onSelect(id);
+    } else {
+      router.push(`/show/${id}`);
+    }
+    setIsOpen(false);
+    setQuery("");
+  };
+
   return (
     <div className="relative w-full max-w-2xl mx-auto z-50" ref={containerRef}>
       <div className="relative group">
@@ -72,11 +85,7 @@ export function SearchBar({ onSelect }: SearchBarProps) {
             {results.map((result) => (
               <button
                 key={result.show.id}
-                onClick={() => {
-                  onSelect(result.show.id);
-                  setIsOpen(false);
-                  setQuery("");
-                }}
+                onClick={() => handleSelect(result.show.id)}
                 className="w-full flex items-center gap-4 p-3 hover:bg-white/5 rounded-lg transition-colors text-left group"
               >
                 <div className="relative h-14 w-10 flex-shrink-0 bg-muted rounded overflow-hidden">
