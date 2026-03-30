@@ -182,7 +182,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                 How long is {show.name}?
               </h2>
               <p className="text-muted-foreground font-semibold text-lg max-w-2xl leading-relaxed">
-                To watch all {totalEpisodes} episodes of {show.name} from start to finish, you'll need a total of <strong>{formattedTotalTime}</strong> of dedicated viewing time.
+                To watch all <strong>{totalEpisodes} episodes</strong> of {show.name} from start to finish, you'll need a total of <strong>{formattedTotalTime}</strong> of dedicated viewing time.
               </p>
             </div>
 
