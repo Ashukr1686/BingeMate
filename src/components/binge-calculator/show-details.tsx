@@ -191,7 +191,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
               <div className="space-y-4">
                 <h2 className="text-4xl font-black text-white flex items-center gap-4">
                   <div className="h-10 w-2 bg-primary rounded-full" />
-                  How long does it take to watch Each Episode
+                  How long does it take to watch without breaks?
                 </h2>
                 <p className="text-muted-foreground font-semibold text-lg max-w-2xl leading-relaxed">
                   Calculate the <strong>Total episodes runtime</strong> by accounting for every single installment. This represents the cumulative duration of all episodes combined for your binge journey.
