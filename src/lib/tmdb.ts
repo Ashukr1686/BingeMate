@@ -14,6 +14,45 @@ export interface TMDBShow {
   genre_ids: number[];
 }
 
+/**
+ * Fetches the top weekly trending TV shows.
+ */
+export async function getTrendingShows(count: number = 50): Promise<TMDBShow[]> {
+  if (!TMDB_API_KEY) {
+    console.warn("TMDB API Key missing.");
+    return [];
+  }
+
+  const pagesNeeded = Math.ceil(count / 20) + 1;
+  const uniqueShows = new Map<number, TMDBShow>();
+
+  try {
+    for (let i = 1; i <= pagesNeeded; i++) {
+      const res = await fetch(
+        `${BASE_URL}/trending/tv/week?api_key=${TMDB_API_KEY}&language=en-US&page=${i}`
+      );
+      if (!res.ok) break;
+      const data = await res.json();
+      if (data.results) {
+        for (const show of data.results) {
+          if (!uniqueShows.has(show.id)) {
+            uniqueShows.set(show.id, show);
+          }
+          if (uniqueShows.size >= count) break;
+        }
+      }
+      if (uniqueShows.size >= count) break;
+    }
+  } catch (error) {
+    console.error("Failed to fetch trending shows from TMDB", error);
+  }
+
+  return Array.from(uniqueShows.values());
+}
+
+/**
+ * Fetches popular TV shows (legacy/alternate).
+ */
 export async function getPopularShows(count: number = 50): Promise<TMDBShow[]> {
   if (!TMDB_API_KEY) {
     console.warn("TMDB API Key missing.");

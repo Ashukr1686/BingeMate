@@ -5,30 +5,23 @@ import { useState, useEffect } from "react";
 import { SearchBar } from "@/components/binge-calculator/search-bar";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Tv, Flame, Clapperboard, MonitorPlay, Sparkles, Search, Clock, Calendar, ChevronRight, Info, Loader2 } from "lucide-react";
+import { Tv, Flame, MonitorPlay, Sparkles, Search, Clock, Calendar, Info, Loader2 } from "lucide-react";
 import Image from "next/image";
-import { getPopularShows, getTMDBImageUrl, TMDBShow } from "@/lib/tmdb";
+import { getTrendingShows, getTMDBImageUrl, TMDBShow } from "@/lib/tmdb";
 
 export default function Home() {
   const router = useRouter();
-  const [popularShows, setPopularShows] = useState<TMDBShow[]>([]);
+  const [trendingShows, setTrendingShows] = useState<TMDBShow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchPopular() {
-      const shows = await getPopularShows(50);
-      setPopularShows(shows);
+    async function fetchTrending() {
+      const shows = await getTrendingShows(50);
+      setTrendingShows(shows);
       setIsLoading(false);
     }
-    fetchPopular();
+    fetchTrending();
   }, []);
-
-  const handleShowSelect = (id: number) => {
-    // Note: We currently use TVMaze IDs for details. 
-    // For a production app, you'd want to use TMDB for both or map them.
-    // For now, search remains the primary way to get TVMaze-compatible IDs.
-    router.push(`/show/${id}`);
-  };
 
   return (
     <main className="min-h-screen bg-background relative overflow-hidden flex flex-col">
@@ -48,7 +41,7 @@ export default function Home() {
           </span>
         </Link>
         <nav className="hidden md:flex items-center gap-8">
-          <a href="#popular" className="text-sm font-bold text-muted-foreground hover:text-white transition-colors flex items-center gap-2 group">
+          <a href="#trending" className="text-sm font-bold text-muted-foreground hover:text-white transition-colors flex items-center gap-2 group">
             <Flame className="h-4 w-4 group-hover:text-orange-500 transition-colors" /> Trending
           </a>
         </nav>
@@ -100,12 +93,12 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Popular Shows Grid (TMDB) */}
-        <div id="popular" className="mt-40 w-full max-w-6xl mx-auto space-y-12 mb-32">
+        {/* Trending Shows Grid (TMDB) */}
+        <div id="trending" className="mt-40 w-full max-w-6xl mx-auto space-y-12 mb-32">
           <div className="flex items-end justify-between">
             <div className="space-y-2">
-              <h2 className="text-4xl font-black text-white tracking-tight">Trending Now</h2>
-              <p className="text-muted-foreground font-semibold">50 Popular series to start your next journey</p>
+              <h2 className="text-4xl font-black text-white tracking-tight">Trending This Week</h2>
+              <p className="text-muted-foreground font-semibold">50 hottest series people are binging right now</p>
             </div>
           </div>
           
@@ -117,15 +110,15 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          ) : popularShows.length > 0 ? (
+          ) : trendingShows.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-              {popularShows.map((show, index) => (
+              {trendingShows.map((show, index) => (
                 <div 
                   key={`${show.id}-${index}`}
                   className="group relative aspect-[2/3] rounded-[2rem] overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-500 binge-card-hover cursor-pointer"
                   onClick={() => {
                     // TMDB IDs differ from TVMaze IDs used in the search/details flow.
-                    // For now, we guide users back to the search bar.
+                    // Guide users to use search for details.
                   }}
                 >
                   <Image 
@@ -148,7 +141,7 @@ export default function Home() {
               <Info className="h-12 w-12 text-primary/50 mx-auto" />
               <h3 className="text-2xl font-black text-white">No Trending Shows</h3>
               <p className="text-muted-foreground max-w-md mx-auto">
-                We couldn't load the popular list right now. Try searching for your favorite show instead.
+                We couldn't load the trending list right now. Try searching for your favorite show instead.
               </p>
             </div>
           )}
