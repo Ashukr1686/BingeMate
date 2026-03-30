@@ -87,44 +87,45 @@ export function SearchBar({ onSelect }: SearchBarProps) {
   return (
     <div className="relative w-full z-50" ref={containerRef}>
       <div className="relative group">
-        <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+        <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
           {isLoading ? (
             <Loader2 className="h-6 w-6 text-primary animate-spin" />
           ) : (
-            <Search className="h-6 w-6 text-muted-foreground group-focus-within:text-primary transition-all duration-300" />
+            <Search className="h-6 w-6 text-muted-foreground group-focus-within:text-primary group-focus-within:scale-110 transition-all duration-300" />
           )}
         </div>
         <Input
           type="text"
-          placeholder="Search for your next obsession..."
-          className="pl-14 pr-14 h-18 py-8 bg-white/5 border-white/10 text-xl md:text-2xl rounded-2xl focus:ring-4 focus:ring-primary/20 focus:border-primary/50 transition-all shadow-2xl backdrop-blur-md placeholder:text-muted-foreground/30 font-medium"
+          placeholder="What are we binging today?..."
+          className="pl-16 pr-16 h-20 py-10 bg-white/5 border-white/10 text-xl md:text-2xl rounded-[2rem] focus:ring-8 focus:ring-primary/10 focus:border-primary/50 transition-all shadow-2xl backdrop-blur-xl placeholder:text-muted-foreground/30 font-black tracking-tight"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => query.length > 2 && setIsOpen(true)}
           onKeyDown={handleKeyDown}
         />
-        <div className="absolute right-5 inset-y-0 flex items-center gap-3">
+        <div className="absolute right-6 inset-y-0 flex items-center gap-4">
           {query && (
             <button 
               onClick={() => { setQuery(""); setResults([]); }}
-              className="p-1 hover:bg-white/10 rounded-full text-muted-foreground hover:text-white transition-colors"
+              className="p-2 hover:bg-white/10 rounded-2xl text-muted-foreground hover:text-white transition-all hover:rotate-90"
             >
-              <X className="h-5 w-5" />
+              <X className="h-6 w-6" />
             </button>
           )}
-          <div className="opacity-30 group-focus-within:opacity-100 transition-opacity">
-            <Sparkles className="h-5 w-5 text-primary" />
+          <div className="opacity-30 group-focus-within:opacity-100 transition-opacity animate-pulse">
+            <Sparkles className="h-6 w-6 text-primary" />
           </div>
         </div>
       </div>
 
       {isOpen && (
-        <Card className="absolute mt-4 w-full max-h-[520px] overflow-hidden glass-panel rounded-3xl border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] animate-in fade-in zoom-in-95 duration-200">
-          <div className="p-2 overflow-y-auto max-h-[510px] scrollbar-thin scrollbar-thumb-white/10">
+        <Card className="absolute mt-6 w-full max-h-[560px] overflow-hidden glass-panel rounded-[2.5rem] border-white/10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.7)] animate-in fade-in zoom-in-95 slide-in-from-top-4 duration-300">
+          <div className="p-4 overflow-y-auto max-h-[540px] scrollbar-thin scrollbar-thumb-white/10">
             {results.length > 0 ? (
-              <div className="space-y-1">
-                <div className="px-4 py-2 text-[10px] uppercase font-black tracking-widest text-muted-foreground/50">
-                  Search Results ({results.length})
+              <div className="space-y-2">
+                <div className="px-6 py-4 text-[10px] uppercase font-black tracking-[0.3em] text-primary/50 flex justify-between items-center">
+                  <span>Results ({results.length})</span>
+                  <span className="text-white/20">Use arrows to navigate</span>
                 </div>
                 {results.map((result, index) => (
                   <button
@@ -132,11 +133,11 @@ export function SearchBar({ onSelect }: SearchBarProps) {
                     onClick={() => handleSelect(result.show.id)}
                     onMouseEnter={() => setSelectedIndex(index)}
                     className={cn(
-                      "w-full flex items-center gap-5 p-3 rounded-2xl transition-all group border border-transparent",
-                      selectedIndex === index ? "bg-primary text-white" : "hover:bg-white/5"
+                      "w-full flex items-center gap-6 p-4 rounded-[1.5rem] transition-all group border border-transparent",
+                      selectedIndex === index ? "bg-primary text-white scale-[1.02] shadow-xl shadow-primary/20" : "hover:bg-white/5"
                     )}
                   >
-                    <div className="relative h-20 w-14 flex-shrink-0 bg-muted rounded-xl overflow-hidden shadow-2xl transition-transform group-hover:scale-105">
+                    <div className="relative h-24 w-16 flex-shrink-0 bg-muted rounded-2xl overflow-hidden shadow-2xl transition-transform group-hover:scale-110">
                       {result.show.image?.medium ? (
                         <Image
                           src={result.show.image.medium}
@@ -146,29 +147,29 @@ export function SearchBar({ onSelect }: SearchBarProps) {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-card">
-                          <Tv className="h-6 w-6 text-muted-foreground" />
+                          <Tv className="h-8 w-8 text-muted-foreground" />
                         </div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0 text-left">
                       <h4 className={cn(
-                        "font-black text-lg truncate",
+                        "font-black text-xl tracking-tight truncate",
                         selectedIndex === index ? "text-white" : "text-white group-hover:text-primary"
                       )}>
                         {result.show.name}
                       </h4>
                       <div className={cn(
-                        "flex items-center gap-2 text-sm mt-1 font-bold",
+                        "flex items-center gap-3 text-sm mt-1.5 font-bold",
                         selectedIndex === index ? "text-white/70" : "text-muted-foreground"
                       )}>
-                        <span>{result.show.premiered?.split("-")[0] || "N/A"}</span>
+                        <span className="bg-white/5 px-2 py-0.5 rounded-lg">{result.show.premiered?.split("-")[0] || "N/A"}</span>
                         <span>•</span>
                         <span className="truncate">{result.show.network?.name || result.show.status}</span>
                       </div>
-                      <div className="flex gap-1.5 mt-2">
+                      <div className="flex gap-2 mt-3">
                         {result.show.genres.slice(0, 2).map(g => (
                           <span key={g} className={cn(
-                            "px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-tighter",
+                            "px-3 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest",
                             selectedIndex === index ? "bg-white/20 text-white" : "bg-primary/10 text-primary"
                           )}>
                             {g}
@@ -177,18 +178,18 @@ export function SearchBar({ onSelect }: SearchBarProps) {
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-6">
                       {result.show.rating?.average && (
                         <div className={cn(
-                          "flex items-center gap-1 font-black text-sm px-2 py-1 rounded-lg",
-                          selectedIndex === index ? "bg-white/20" : "text-primary bg-primary/10"
+                          "flex items-center gap-1.5 font-black text-sm px-3 py-1.5 rounded-2xl",
+                          selectedIndex === index ? "bg-white/20" : "text-primary bg-primary/10 border border-primary/20"
                         )}>
-                          <Star className={cn("h-3 w-3", selectedIndex === index ? "fill-white" : "fill-primary")} />
+                          <Star className={cn("h-4 w-4", selectedIndex === index ? "fill-white" : "fill-primary")} />
                           {result.show.rating.average}
                         </div>
                       )}
                       <ChevronRight className={cn(
-                        "h-5 w-5 transition-transform",
+                        "h-6 w-6 transition-transform duration-300",
                         selectedIndex === index ? "translate-x-1 opacity-100" : "opacity-0"
                       )} />
                     </div>
@@ -196,13 +197,13 @@ export function SearchBar({ onSelect }: SearchBarProps) {
                 ))}
               </div>
             ) : query.length > 2 && !isLoading && (
-              <div className="p-12 text-center space-y-4">
-                <div className="bg-white/5 w-16 h-16 rounded-full flex items-center justify-center mx-auto border border-white/10">
-                  <Search className="h-8 w-8 text-muted-foreground/30" />
+              <div className="p-16 text-center space-y-6">
+                <div className="bg-white/5 w-24 h-24 rounded-[2rem] flex items-center justify-center mx-auto border border-white/10 rotate-12">
+                  <Search className="h-10 w-10 text-muted-foreground/20" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-white">No shows found</h3>
-                  <p className="text-muted-foreground text-sm font-medium">Try adjusting your keywords or checking the spelling.</p>
+                  <h3 className="text-2xl font-black text-white">No shows found</h3>
+                  <p className="text-muted-foreground text-base font-semibold">Try adjusting your keywords or checking the spelling.</p>
                 </div>
               </div>
             )}
