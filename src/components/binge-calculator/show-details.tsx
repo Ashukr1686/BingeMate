@@ -25,6 +25,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
   
   const episodes = show._embedded?.episodes || [];
   const totalEpisodes = episodes.length;
+  const avgRuntime = show.averageRuntime || 45;
   
   // Calculate runtime with optional "Skip Intros" (deduct 3 mins per episode)
   const totalRuntimeMinutes = useMemo(() => {
@@ -181,8 +182,8 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                 <div className="h-10 w-2 bg-indigo-400 rounded-full" />
                 How long is {show.name}?
               </h2>
-              <p className="text-muted-foreground font-semibold text-lg max-w-2xl leading-relaxed">
-                To watch all <strong>{totalEpisodes} episodes</strong> of {show.name} from start to finish, you'll need a total of <strong>{formattedTotalTime}</strong> of dedicated viewing time.
+              <p className="text-muted-foreground font-semibold text-lg max-w-3xl leading-relaxed">
+                There are <strong>{totalEpisodes} episodes</strong> and each episode is <strong>{avgRuntime} minutes</strong>, so the duration of <strong>{show.name}</strong> is <strong>{totalEpisodes} multiplied by {avgRuntime} minutes</strong>, which is <strong>{totalRuntimeMinutes} minutes</strong> (about {formattedTotalTime}).
               </p>
             </div>
 
