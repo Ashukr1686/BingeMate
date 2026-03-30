@@ -1,16 +1,19 @@
+
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { TVShow } from "@/types/tvmaze";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Calendar, PlayCircle, Star, Tv, Info, Clock, Share2, Heart, Sparkles, TrendingUp } from "lucide-react";
+import { Calendar, PlayCircle, Star, Tv, Info, Clock, Share2, Heart, Sparkles, TrendingUp, Zap, FastForward, Activity } from "lucide-react";
 import Image from "next/image";
 import { DurationDisplay } from "./duration-display";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { format, addDays } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils";
 
 interface ShowDetailsProps {
   show: TVShow;
@@ -18,17 +21,43 @@ interface ShowDetailsProps {
 
 export function ShowDetails({ show }: ShowDetailsProps) {
   const [hoursPerDay, setHoursPerDay] = useState([3]);
+  const [skipIntros, setSkipIntros] = useState(false);
   
   const episodes = show._embedded?.episodes || [];
   const totalEpisodes = episodes.length;
   
-  const totalRuntimeMinutes = episodes.reduce((acc, ep) => {
-    return acc + (ep.runtime || show.averageRuntime || 30);
-  }, 0);
+  // Calculate runtime with optional "Skip Intros" (deduct 3 mins per episode)
+  const totalRuntimeMinutes = useMemo(() => {
+    return episodes.reduce((acc, ep) => {
+      let runtime = ep.runtime || show.averageRuntime || 30;
+      if (skipIntros && runtime > 5) {
+        runtime -= 3; // Subtract 3 mins for intro/credits
+      }
+      return acc + runtime;
+    }, 0);
+  }, [episodes, show.averageRuntime, skipIntros]);
   
   const totalHours = totalRuntimeMinutes / 60;
   const daysToFinish = totalHours > 0 ? Math.ceil(totalHours / hoursPerDay[0]) : 0;
   const finishDate = addDays(new Date(), daysToFinish);
+
+  // Binge Intensity Logic
+  const getIntensity = (hours: number) => {
+    if (hours <= 1) return { label: "Casual", color: "text-blue-400", bg: "bg-blue-500/10" };
+    if (hours <= 3) return { label: "Dedicated", color: "text-green-400", bg: "bg-green-500/10" };
+    if (hours <= 6) return { label: "Hardcore", color: "text-orange-400", bg: "bg-orange-500/10" };
+    return { label: "Legendary", color: "text-red-500", bg: "bg-red-500/10" };
+  };
+
+  const intensity = getIntensity(hoursPerDay[0]);
+
+  // Difficulty Rating based on total hours
+  const getDifficulty = (hours: number) => {
+    if (hours < 10) return "Quick Sprint";
+    if (hours < 30) return "Weekend Warrior";
+    if (hours < 100) return "Serious Commitment";
+    return "Life Odyssey";
+  };
 
   return (
     <div className="w-full max-w-7xl mx-auto space-y-16 animate-in fade-in slide-in-from-bottom-12 duration-1000">
@@ -64,13 +93,16 @@ export function ShowDetails({ show }: ShowDetailsProps) {
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             
-            <div className="absolute top-8 right-8">
+            <div className="absolute top-8 right-8 flex flex-col gap-3 items-end">
               {show.rating?.average && (
                 <div className="bg-primary backdrop-blur-xl text-white px-5 py-3 rounded-2xl font-black flex items-center gap-2 shadow-2xl border border-white/20 text-lg">
                   <Star className="h-5 w-5 fill-white" />
                   {show.rating.average}
                 </div>
               )}
+              <div className="bg-black/60 backdrop-blur-xl text-white/90 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border border-white/10">
+                {getDifficulty(totalHours)}
+              </div>
             </div>
           </Card>
 
@@ -141,14 +173,33 @@ export function ShowDetails({ show }: ShowDetailsProps) {
           </div>
 
           <div className="space-y-12 pt-8">
-            <div className="space-y-4">
-              <h2 className="text-4xl font-black text-white flex items-center gap-4">
-                <div className="h-10 w-2 bg-primary rounded-full" />
-                Total Binge Time
-              </h2>
-              <p className="text-muted-foreground font-semibold text-lg max-w-2xl leading-relaxed">
-                The ultimate <strong>Series binge calculator</strong>. This is the <strong>total episodes runtime</strong> if you watch every single season back-to-back.
-              </p>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div className="space-y-4">
+                <h2 className="text-4xl font-black text-white flex items-center gap-4">
+                  <div className="h-10 w-2 bg-primary rounded-full" />
+                  Total Binge Time
+                </h2>
+                <p className="text-muted-foreground font-semibold text-lg max-w-2xl leading-relaxed">
+                  The ultimate <strong>Series binge calculator</strong>. This is the <strong>total episodes runtime</strong> if you watch every single season back-to-back.
+                </p>
+              </div>
+
+              {/* Skip Intros Toggle */}
+              <div className="glass-panel p-6 rounded-[2rem] flex items-center gap-6 border-white/10 hover:bg-white/5 transition-colors">
+                <div className="bg-primary/20 p-3 rounded-xl">
+                  <FastForward className="h-5 w-5 text-primary" />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="skip-intros" className="text-xs font-black uppercase tracking-wider text-white">Skip Intros</Label>
+                  <p className="text-[10px] text-muted-foreground font-bold">-3m / episode</p>
+                </div>
+                <Switch 
+                  id="skip-intros" 
+                  checked={skipIntros} 
+                  onCheckedChange={setSkipIntros}
+                  className="data-[state=checked]:bg-primary"
+                />
+              </div>
             </div>
             
             <DurationDisplay totalMinutes={totalRuntimeMinutes} />
@@ -164,9 +215,12 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                   <h3 className="text-4xl font-black text-white tracking-tight">
                     Personal Schedule
                   </h3>
-                  <p className="text-muted-foreground font-semibold text-lg max-w-md leading-relaxed">
-                    Use our <strong>episodes per day calculator</strong> to forecast your <strong>binge watch schedule</strong>.
-                  </p>
+                  <div className="flex items-center gap-3">
+                    <Activity className={cn("h-5 w-5", intensity.color)} />
+                    <span className={cn("text-xs font-black uppercase tracking-[0.2em]", intensity.color)}>
+                      Intensity: {intensity.label}
+                    </span>
+                  </div>
                 </div>
                 <div className="bg-primary p-10 rounded-[2.5rem] text-center min-w-[180px] shadow-[0_20px_50px_rgba(99,102,241,0.5)] transform hover:scale-110 transition-transform">
                   <span className="text-6xl font-black text-white tracking-tighter">{hoursPerDay[0]}h</span>
