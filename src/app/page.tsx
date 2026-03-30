@@ -1,15 +1,24 @@
+
 "use client";
 
 import { SearchBar } from "@/components/binge-calculator/search-bar";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Tv, Flame, Clapperboard, MonitorPlay, HelpCircle, Sparkles } from "lucide-react";
+import { Tv, Flame, Clapperboard, MonitorPlay, HelpCircle, Sparkles, Search, Clock, Calendar, ChevronRight } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import Image from "next/image";
+
+const POPULAR_SHOWS = [
+  { id: 169, name: "Breaking Bad", year: "2008", image: "https://picsum.photos/seed/bb/400/600", hint: "breaking bad" },
+  { id: 82, name: "Game of Thrones", year: "2011", image: "https://picsum.photos/seed/got/400/600", hint: "game of thrones" },
+  { id: 431, name: "Stranger Things", year: "2016", image: "https://picsum.photos/seed/st/400/600", hint: "stranger things" },
+  { id: 1871, name: "The Bear", year: "2022", image: "https://picsum.photos/seed/bear/400/600", hint: "the bear" },
+];
 
 export default function Home() {
   const router = useRouter();
@@ -36,9 +45,9 @@ export default function Home() {
           </span>
         </Link>
         <nav className="hidden md:flex items-center gap-8">
-          <button className="text-sm font-bold text-muted-foreground hover:text-white transition-colors flex items-center gap-2 group">
-            <Flame className="h-4 w-4 group-hover:text-orange-500 transition-colors" /> Trending
-          </button>
+          <a href="#popular" className="text-sm font-bold text-muted-foreground hover:text-white transition-colors flex items-center gap-2 group">
+            <Flame className="h-4 w-4 group-hover:text-orange-500 transition-colors" /> Popular
+          </a>
           <a href="#faq" className="text-sm font-bold text-muted-foreground hover:text-white transition-colors flex items-center gap-2">
             <HelpCircle className="h-4 w-4" /> FAQ
           </a>
@@ -46,9 +55,9 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="flex-1 flex flex-col items-center justify-center container mx-auto px-6 relative z-10 py-12">
+      <section className="flex flex-col items-center justify-center container mx-auto px-6 relative z-10 py-12">
         <div className="text-center max-w-4xl mx-auto space-y-8 mb-16 animate-in fade-in slide-in-from-top-12 duration-1000">
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 border border-primary/20 text-xs font-black tracking-widest text-primary uppercase mb-4 animate-bounce">
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 border border-primary/20 text-xs font-black tracking-widest text-primary uppercase mb-4">
             <Sparkles className="h-3.5 w-3.5" /> Start Your Next Adventure
           </div>
           <h1 className="text-7xl md:text-9xl font-black text-white tracking-tighter leading-[0.85] lg:leading-[0.8]">
@@ -64,6 +73,66 @@ export default function Home() {
         
         <div className="w-full max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200">
           <SearchBar onSelect={handleShowSelect} />
+        </div>
+
+        {/* How It Works Section */}
+        <div className="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mx-auto relative z-10">
+          <div className="glass-panel p-8 rounded-[2.5rem] space-y-4 hover:scale-105 transition-transform duration-500">
+            <div className="bg-primary/20 w-14 h-14 rounded-2xl flex items-center justify-center border border-primary/20">
+              <Search className="h-7 w-7 text-primary" />
+            </div>
+            <h3 className="text-xl font-black text-white">1. Find your show</h3>
+            <p className="text-muted-foreground font-medium">Search from our library of thousands of series and seasons.</p>
+          </div>
+          <div className="glass-panel p-8 rounded-[2.5rem] space-y-4 hover:scale-105 transition-transform duration-500">
+            <div className="bg-indigo-500/20 w-14 h-14 rounded-2xl flex items-center justify-center border border-indigo-500/20">
+              <Clock className="h-7 w-7 text-indigo-400" />
+            </div>
+            <h3 className="text-xl font-black text-white">2. Get the time</h3>
+            <p className="text-muted-foreground font-medium">See exactly how many days, hours, and minutes of content exist.</p>
+          </div>
+          <div className="glass-panel p-8 rounded-[2.5rem] space-y-4 hover:scale-105 transition-transform duration-500">
+            <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center border border-cyan-500/20">
+              <Calendar className="h-7 w-7 text-cyan-400" />
+            </div>
+            <h3 className="text-xl font-black text-white">3. Plan your marathon</h3>
+            <p className="text-muted-foreground font-medium">Use the scheduler to find out when you'll finish based on your pace.</p>
+          </div>
+        </div>
+
+        {/* Popular Shows Grid */}
+        <div id="popular" className="mt-40 w-full max-w-6xl mx-auto space-y-12">
+          <div className="flex items-end justify-between">
+            <div className="space-y-2">
+              <h2 className="text-4xl font-black text-white tracking-tight">Popular Right Now</h2>
+              <p className="text-muted-foreground font-semibold">Start with these fan favorites</p>
+            </div>
+            <Link href="/" className="text-primary font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
+              See more <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {POPULAR_SHOWS.map((show) => (
+              <button 
+                key={show.id}
+                onClick={() => handleShowSelect(show.id)}
+                className="group relative aspect-[2/3] rounded-[2rem] overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-500 binge-card-hover"
+              >
+                <Image 
+                  src={show.image} 
+                  alt={show.name} 
+                  fill 
+                  className="object-cover group-hover:scale-110 transition-transform duration-700" 
+                  data-ai-hint={show.hint}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-6 text-left">
+                  <span className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">{show.year}</span>
+                  <h4 className="text-xl font-black text-white leading-tight">{show.name}</h4>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* FAQ Section */}
