@@ -20,8 +20,8 @@ export async function getPopularShows(count: number = 50): Promise<TMDBShow[]> {
     return [];
   }
 
-  const pagesNeeded = Math.ceil(count / 20);
-  let allShows: TMDBShow[] = [];
+  const pagesNeeded = Math.ceil(count / 20) + 1;
+  const uniqueShows = new Map<number, TMDBShow>();
 
   try {
     for (let i = 1; i <= pagesNeeded; i++) {
@@ -31,14 +31,20 @@ export async function getPopularShows(count: number = 50): Promise<TMDBShow[]> {
       if (!res.ok) break;
       const data = await res.json();
       if (data.results) {
-        allShows = [...allShows, ...data.results];
+        for (const show of data.results) {
+          if (!uniqueShows.has(show.id)) {
+            uniqueShows.set(show.id, show);
+          }
+          if (uniqueShows.size >= count) break;
+        }
       }
+      if (uniqueShows.size >= count) break;
     }
   } catch (error) {
     console.error("Failed to fetch popular shows from TMDB", error);
   }
 
-  return allShows.slice(0, count);
+  return Array.from(uniqueShows.values());
 }
 
 export function getTMDBImageUrl(path: string, size: "w500" | "original" = "w500") {

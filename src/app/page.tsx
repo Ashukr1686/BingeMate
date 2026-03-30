@@ -119,9 +119,9 @@ export default function Home() {
             </div>
           ) : popularShows.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-              {popularShows.map((show) => (
+              {popularShows.map((show, index) => (
                 <div 
-                  key={show.id}
+                  key={`${show.id}-${index}`}
                   className="group relative aspect-[2/3] rounded-[2rem] overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-500 binge-card-hover cursor-pointer"
                   onClick={() => {
                     // TMDB IDs differ from TVMaze IDs used in the search/details flow.
