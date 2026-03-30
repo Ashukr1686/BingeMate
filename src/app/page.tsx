@@ -67,7 +67,7 @@ export default function Home() {
         </div>
 
         {/* FAQ Section */}
-        <div id="faq" className="mt-32 w-full max-w-3xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
+        <div id="faq" className="mt-32 w-full max-w-3xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500 mb-20">
           <div className="text-center space-y-2">
             <h2 className="text-3xl font-black text-white tracking-tight">Common Questions</h2>
             <p className="text-muted-foreground font-medium">Everything you need to know about BingeMate</p>
@@ -122,26 +122,6 @@ export default function Home() {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-12 text-center opacity-40 hover:opacity-100 transition-opacity duration-500 mb-20">
-          <div>
-            <div className="text-3xl font-black text-white">70k+</div>
-            <div className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Shows Tracked</div>
-          </div>
-          <div>
-            <div className="text-3xl font-black text-white">2M+</div>
-            <div className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Episodes Indexed</div>
-          </div>
-          <div>
-            <div className="text-3xl font-black text-white">24/7</div>
-            <div className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Real-time Updates</div>
-          </div>
-          <div>
-            <div className="text-3xl font-black text-white">100%</div>
-            <div className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Free to Use</div>
-          </div>
         </div>
       </section>
 
