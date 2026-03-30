@@ -22,11 +22,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cleanSummary = show.summary?.replace(/<[^>]*>?/gm, "").substring(0, 160) || "";
 
   return {
-    title: `${show.name} Binge Time Calculator | BingeMate Planner`,
-    description: `How long does it take to binge ${show.name}? Calculate total episodes runtime and plan your binge watch schedule. Average runtime: ${show.averageRuntime || 'N/A'} mins.`,
+    title: `How Long To Watch ${show.name} | BingeMate`,
+    description: `How long does it take to watch ${show.name}? Calculate the total episodes runtime and plan your binge watch schedule with our TV show commitment calculator. Average runtime: ${show.averageRuntime || 'N/A'} mins.`,
     openGraph: {
-      title: `${show.name} Watch Time Calculator`,
-      description: `Find out exactly how long it takes to binge watch ${show.name} with our series binge calculator.`,
+      title: `How Long To Watch ${show.name}`,
+      description: `Find out exactly how long it takes to watch ${show.name} with our series binge calculator and planner.`,
       images: show.image?.original ? [show.image.original] : [],
     },
   };
