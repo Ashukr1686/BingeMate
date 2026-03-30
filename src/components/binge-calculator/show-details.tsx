@@ -23,7 +23,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
   const totalEpisodes = episodes.length;
   
   const totalRuntimeMinutes = episodes.reduce((acc, ep) => {
-    return acc + (ep.runtime || show.averageRuntime || 45);
+    return acc + (ep.runtime || show.averageRuntime || 30);
   }, 0);
   
   const totalHours = totalRuntimeMinutes / 60;
@@ -142,10 +142,10 @@ export function ShowDetails({ show }: ShowDetailsProps) {
             <div className="space-y-3">
               <h2 className="text-2xl font-black text-white flex items-center gap-3">
                 <span className="h-2 w-2 bg-primary rounded-full animate-pulse" />
-                Total Binge Time
+                Total Binge Time Calculator
               </h2>
               <p className="text-muted-foreground font-medium">
-                The absolute time required to finish every season back-to-back without breaks.
+                <strong>Total episodes runtime:</strong> The absolute time required to finish every season back-to-back without breaks.
               </p>
             </div>
             
@@ -157,10 +157,10 @@ export function ShowDetails({ show }: ShowDetailsProps) {
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div className="space-y-2">
                   <h3 className="text-2xl font-black text-white flex items-center gap-3">
-                    <Clock className="h-6 w-6 text-primary" /> Smart Binge Planner
+                    <Clock className="h-6 w-6 text-primary" /> Binge Watch Planner
                   </h3>
                   <p className="text-muted-foreground font-medium max-w-md">
-                    Customize your pace. Adjust your daily watching limit to forecast your finish line.
+                    Your custom <strong>episodes per day calculator</strong> and <strong>binge watch schedule tool</strong>. Adjust your daily watching limit to forecast your finish line.
                   </p>
                 </div>
                 <div className="bg-primary p-6 rounded-3xl text-center min-w-[120px] shadow-2xl shadow-primary/30">
@@ -181,11 +181,11 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-8 border-t border-white/5">
                   <div className="bg-white/5 p-6 rounded-2xl border border-white/5 group hover:bg-white/10 transition-all">
-                    <Label className="text-muted-foreground text-[10px] uppercase font-black tracking-widest mb-3 block">Timeline</Label>
+                    <Label className="text-muted-foreground text-[10px] uppercase font-black tracking-widest mb-3 block">Binge Timeline</Label>
                     <p className="text-3xl font-black text-white">{daysToFinish} <span className="text-sm text-muted-foreground font-bold">Days</span></p>
                   </div>
                   <div className="bg-primary/10 p-6 rounded-2xl border border-primary/20 group hover:bg-primary/20 transition-all">
-                    <Label className="text-primary text-[10px] uppercase font-black tracking-widest mb-3 block">Grand Finale</Label>
+                    <Label className="text-primary text-[10px] uppercase font-black tracking-widest mb-3 block">The Grand Finale</Label>
                     <p className="text-3xl font-black text-primary">{format(finishDate, 'MMM do')}</p>
                     <p className="text-xs font-bold text-primary/60 mt-1">{format(finishDate, 'yyyy')}</p>
                   </div>
@@ -194,7 +194,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
             </Card>
 
             <div className="flex items-center justify-center gap-2 py-4 text-muted-foreground/50 text-xs font-bold uppercase tracking-widest">
-              <span className="flex items-center gap-1.5"><Info className="h-4 w-4" /> Calculated for optimized viewing flow</span>
+              <span className="flex items-center gap-1.5"><Info className="h-4 w-4" /> Professional TV show commitment calculator</span>
             </div>
           </div>
         </div>

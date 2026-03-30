@@ -19,15 +19,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  // Strip HTML tags from summary for SEO description
   const cleanSummary = show.summary?.replace(/<[^>]*>?/gm, "").substring(0, 160) || "";
 
   return {
-    title: `${show.name} Binge Time & Calculator | BingeMate`,
-    description: `How long does it take to watch ${show.name}? Total binge duration: ${show.averageRuntime || 'N/A'} mins avg. ${cleanSummary}`,
+    title: `${show.name} Binge Time Calculator | BingeMate Planner`,
+    description: `How long does it take to binge ${show.name}? Calculate total episodes runtime and plan your binge watch schedule. Average runtime: ${show.averageRuntime || 'N/A'} mins.`,
     openGraph: {
-      title: `${show.name} Binge Duration`,
-      description: cleanSummary,
+      title: `${show.name} Watch Time Calculator`,
+      description: `Find out exactly how long it takes to binge watch ${show.name} with our series binge calculator.`,
       images: show.image?.original ? [show.image.original] : [],
     },
   };
@@ -72,7 +71,7 @@ export default async function ShowPage({ params }: Props) {
 
       {/* Footer */}
       <footer className="mt-auto border-t border-white/5 py-8 text-center text-muted-foreground text-sm">
-        <p>© {new Date().getFullYear()} BingeMate • Powered by TVMaze API</p>
+        <p>© {new Date().getFullYear()} BingeMate • Professional Binge Watch Calculator</p>
       </footer>
     </main>
   );
