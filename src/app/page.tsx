@@ -1,29 +1,32 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import { SearchBar } from "@/components/binge-calculator/search-bar";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Tv, Flame, Clapperboard, MonitorPlay, HelpCircle, Sparkles, Search, Clock, Calendar, ChevronRight } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Tv, Flame, Clapperboard, MonitorPlay, Sparkles, Search, Clock, Calendar, ChevronRight, Info } from "lucide-react";
 import Image from "next/image";
-
-const POPULAR_SHOWS = [
-  { id: 169, name: "Breaking Bad", year: "2008", image: "https://picsum.photos/seed/bb/400/600", hint: "breaking bad" },
-  { id: 82, name: "Game of Thrones", year: "2011", image: "https://picsum.photos/seed/got/400/600", hint: "game of thrones" },
-  { id: 431, name: "Stranger Things", year: "2016", image: "https://picsum.photos/seed/st/400/600", hint: "stranger things" },
-  { id: 1871, name: "The Bear", year: "2022", image: "https://picsum.photos/seed/bear/400/600", hint: "the bear" },
-];
+import { getPopularShows, getTMDBImageUrl, TMDBShow } from "@/lib/tmdb";
 
 export default function Home() {
   const router = useRouter();
+  const [popularShows, setPopularShows] = useState<TMDBShow[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPopular() {
+      const shows = await getPopularShows(50);
+      setPopularShows(shows);
+      setIsLoading(false);
+    }
+    fetchPopular();
+  }, []);
 
   const handleShowSelect = (id: number) => {
+    // Note: We currently use TVMaze IDs for details. 
+    // For a production app, you'd want to use TMDB for both or map them.
+    // For now, search remains the primary way to get TVMaze-compatible IDs.
     router.push(`/show/${id}`);
   };
 
@@ -46,10 +49,7 @@ export default function Home() {
         </Link>
         <nav className="hidden md:flex items-center gap-8">
           <a href="#popular" className="text-sm font-bold text-muted-foreground hover:text-white transition-colors flex items-center gap-2 group">
-            <Flame className="h-4 w-4 group-hover:text-orange-500 transition-colors" /> Popular
-          </a>
-          <a href="#faq" className="text-sm font-bold text-muted-foreground hover:text-white transition-colors flex items-center gap-2">
-            <HelpCircle className="h-4 w-4" /> FAQ
+            <Flame className="h-4 w-4 group-hover:text-orange-500 transition-colors" /> Trending
           </a>
         </nav>
       </header>
@@ -67,12 +67,12 @@ export default function Home() {
             </span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto font-medium leading-relaxed">
-            The ultimate <strong>Binge watch planner</strong> for series lovers. Calculate binge time for TV series instantly and map out your marathon.
+            The ultimate <strong>Binge watch planner</strong>. Calculate <strong>total episodes runtime</strong> instantly and map out your marathon.
           </p>
         </div>
         
         <div className="w-full max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200">
-          <SearchBar onSelect={handleShowSelect} />
+          <SearchBar />
         </div>
 
         {/* How It Works Section */}
@@ -82,123 +82,81 @@ export default function Home() {
               <Search className="h-7 w-7 text-primary" />
             </div>
             <h3 className="text-xl font-black text-white">1. Find your show</h3>
-            <p className="text-muted-foreground font-medium">Search from our library of thousands of series and seasons.</p>
+            <p className="text-muted-foreground font-medium">Search using our <strong>Binge watch calculator</strong> to find any series.</p>
           </div>
           <div className="glass-panel p-8 rounded-[2.5rem] space-y-4 hover:scale-105 transition-transform duration-500">
             <div className="bg-indigo-500/20 w-14 h-14 rounded-2xl flex items-center justify-center border border-indigo-500/20">
               <Clock className="h-7 w-7 text-indigo-400" />
             </div>
             <h3 className="text-xl font-black text-white">2. Get the time</h3>
-            <p className="text-muted-foreground font-medium">See exactly how many days, hours, and minutes of content exist.</p>
+            <p className="text-muted-foreground font-medium">See the <strong>Total episodes runtime</strong> for a non-stop marathon.</p>
           </div>
           <div className="glass-panel p-8 rounded-[2.5rem] space-y-4 hover:scale-105 transition-transform duration-500">
             <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center border border-cyan-500/20">
               <Calendar className="h-7 w-7 text-cyan-400" />
             </div>
-            <h3 className="text-xl font-black text-white">3. Plan your marathon</h3>
-            <p className="text-muted-foreground font-medium">Use the scheduler to find out when you'll finish based on your pace.</p>
+            <h3 className="text-xl font-black text-white">3. Plan your schedule</h3>
+            <p className="text-muted-foreground font-medium">Use the <strong>Binge watch schedule tool</strong> to find your finish date.</p>
           </div>
         </div>
 
-        {/* Popular Shows Grid */}
-        <div id="popular" className="mt-40 w-full max-w-6xl mx-auto space-y-12">
+        {/* Popular Shows Grid (TMDB) */}
+        <div id="popular" className="mt-40 w-full max-w-6xl mx-auto space-y-12 mb-32">
           <div className="flex items-end justify-between">
             <div className="space-y-2">
-              <h2 className="text-4xl font-black text-white tracking-tight">Popular Right Now</h2>
-              <p className="text-muted-foreground font-semibold">Start with these fan favorites</p>
+              <h2 className="text-4xl font-black text-white tracking-tight">Trending Now</h2>
+              <p className="text-muted-foreground font-semibold">50 Popular series to start your next journey</p>
             </div>
-            <Link href="/" className="text-primary font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
-              See more <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {POPULAR_SHOWS.map((show) => (
-              <button 
-                key={show.id}
-                onClick={() => handleShowSelect(show.id)}
-                className="group relative aspect-[2/3] rounded-[2rem] overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-500 binge-card-hover"
-              >
-                <Image 
-                  src={show.image} 
-                  alt={show.name} 
-                  fill 
-                  className="object-cover group-hover:scale-110 transition-transform duration-700" 
-                  data-ai-hint={show.hint}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-6 text-left">
-                  <span className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">{show.year}</span>
-                  <h4 className="text-xl font-black text-white leading-tight">{show.name}</h4>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* FAQ Section */}
-        <div id="faq" className="mt-40 w-full max-w-3xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500 mb-32">
-          <div className="text-center space-y-3">
-            <div className="bg-white/5 w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-4 border border-white/10 rotate-6 group hover:rotate-0 transition-transform">
-               <Clapperboard className="h-8 w-8 text-primary" />
+          {isLoading ? (
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+              {[...Array(10)].map((_, i) => (
+                <div key={i} className="aspect-[2/3] rounded-[2rem] bg-white/5 animate-pulse" />
+              ))}
             </div>
-            <h2 className="text-4xl font-black text-white tracking-tight">Got Questions?</h2>
-            <p className="text-muted-foreground font-semibold text-lg">Everything you need to know about calculating binge time</p>
-          </div>
-
-          <Accordion type="single" collapsible className="w-full glass-panel rounded-[2.5rem] p-8 border-white/5 space-y-2">
-            <AccordionItem value="item-1" className="border-white/5 px-4">
-              <AccordionTrigger className="text-white font-black text-xl hover:text-primary transition-colors hover:no-underline py-6">
-                How does the binge calculator work?
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground text-lg leading-relaxed pb-6">
-                Our <strong>TV binge time calculator</strong> works by fetching the precise duration of every aired episode. We aggregate the <strong>total episodes runtime</strong> to give you a perfect non-stop countdown.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="item-2" className="border-white/5 px-4">
-              <AccordionTrigger className="text-white font-black text-xl hover:text-primary transition-colors hover:no-underline py-6 text-left">
-                Can you give me a calculation example?
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground text-lg leading-relaxed space-y-6 pb-6">
-                <p>Curious about your <strong>TV show commitment calculator</strong> result? Let's break down a 62-episode masterpiece:</p>
-                <div className="bg-white/5 p-8 rounded-[2rem] border border-white/10 space-y-6 relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors" />
-                  <div className="grid grid-cols-2 gap-8">
-                    <div>
-                      <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2">Total Minutes</p>
-                      <p className="text-3xl font-black text-white">3,720m</p>
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2">Total Hours</p>
-                      <p className="text-3xl font-black text-white">62h</p>
-                    </div>
-                  </div>
-                  <div className="h-px bg-white/5" />
-                  <div>
-                    <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2">Binge Calculator Result</p>
-                    <p className="text-4xl font-black text-white">2 Days, 14 Hours</p>
-                    <p className="text-sm font-medium text-muted-foreground mt-2">That's the time required for a non-stop marathon!</p>
+          ) : popularShows.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+              {popularShows.map((show) => (
+                <div 
+                  key={show.id}
+                  className="group relative aspect-[2/3] rounded-[2rem] overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-500 binge-card-hover cursor-pointer"
+                  onClick={() => {
+                    // Since search uses TVMaze, we'll suggest using search for now
+                    // In a full TMDB implementation, we'd navigate to /show/[tmdbId]
+                  }}
+                >
+                  <Image 
+                    src={getTMDBImageUrl(show.poster_path) || "https://picsum.photos/seed/placeholder/400/600"} 
+                    alt={show.name} 
+                    fill 
+                    className="object-cover group-hover:scale-110 transition-transform duration-700" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-6 text-left">
+                    <span className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">
+                      {show.first_air_date?.split("-")[0]}
+                    </span>
+                    <h4 className="text-lg font-black text-white leading-tight truncate">{show.name}</h4>
                   </div>
                 </div>
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="item-3" className="border-none px-4">
-              <AccordionTrigger className="text-white font-black text-xl hover:text-primary transition-colors hover:no-underline py-6">
-                What is the Binge Watch Schedule Tool?
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground text-lg leading-relaxed pb-6">
-                Our <strong>Binge watch planner</strong> is an <strong>episodes per day calculator</strong>. Set your daily limit, and we'll calculate exactly <strong>how many days to finish a show</strong> and give you your finale date!
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+              ))}
+            </div>
+          ) : (
+            <div className="glass-panel p-12 rounded-[3rem] text-center space-y-4">
+              <Info className="h-12 w-12 text-primary/50 mx-auto" />
+              <h3 className="text-2xl font-black text-white">TMDB Key Required</h3>
+              <p className="text-muted-foreground max-w-md mx-auto">
+                Please set your <code>NEXT_PUBLIC_TMDB_API_KEY</code> to see the trending shows list.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Footer */}
       <footer className="mt-auto border-t border-white/5 py-12 relative z-10 bg-black/20">
         <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 text-sm text-muted-foreground font-bold">
-          <p>© {new Date().getFullYear()} BingeMate. The ultimate series binge calculator. Data via TVMaze.</p>
+          <p>© {new Date().getFullYear()} BingeMate. Data via TMDB & TVMaze.</p>
           <div className="flex gap-10">
             <span className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Terms</span>
             <span className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Privacy</span>
