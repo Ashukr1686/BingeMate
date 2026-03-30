@@ -1,5 +1,5 @@
 
-const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+const TMDB_API_KEY = "e547e17d4e91f3e62a571655cd1ccaff";
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 
@@ -16,7 +16,7 @@ export interface TMDBShow {
 
 export async function getPopularShows(count: number = 50): Promise<TMDBShow[]> {
   if (!TMDB_API_KEY) {
-    console.warn("TMDB API Key missing. Please set NEXT_PUBLIC_TMDB_API_KEY.");
+    console.warn("TMDB API Key missing.");
     return [];
   }
 

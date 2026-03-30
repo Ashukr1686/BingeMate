@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { SearchBar } from "@/components/binge-calculator/search-bar";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Tv, Flame, Clapperboard, MonitorPlay, Sparkles, Search, Clock, Calendar, ChevronRight, Info } from "lucide-react";
+import { Tv, Flame, Clapperboard, MonitorPlay, Sparkles, Search, Clock, Calendar, ChevronRight, Info, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { getPopularShows, getTMDBImageUrl, TMDBShow } from "@/lib/tmdb";
 
@@ -112,7 +112,9 @@ export default function Home() {
           {isLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
               {[...Array(10)].map((_, i) => (
-                <div key={i} className="aspect-[2/3] rounded-[2rem] bg-white/5 animate-pulse" />
+                <div key={i} className="aspect-[2/3] rounded-[2rem] bg-white/5 animate-pulse flex items-center justify-center">
+                   <Loader2 className="h-8 w-8 text-primary/20 animate-spin" />
+                </div>
               ))}
             </div>
           ) : popularShows.length > 0 ? (
@@ -122,8 +124,8 @@ export default function Home() {
                   key={show.id}
                   className="group relative aspect-[2/3] rounded-[2rem] overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-500 binge-card-hover cursor-pointer"
                   onClick={() => {
-                    // Since search uses TVMaze, we'll suggest using search for now
-                    // In a full TMDB implementation, we'd navigate to /show/[tmdbId]
+                    // TMDB IDs differ from TVMaze IDs used in the search/details flow.
+                    // For now, we guide users back to the search bar.
                   }}
                 >
                   <Image 
@@ -144,9 +146,9 @@ export default function Home() {
           ) : (
             <div className="glass-panel p-12 rounded-[3rem] text-center space-y-4">
               <Info className="h-12 w-12 text-primary/50 mx-auto" />
-              <h3 className="text-2xl font-black text-white">TMDB Key Required</h3>
+              <h3 className="text-2xl font-black text-white">No Trending Shows</h3>
               <p className="text-muted-foreground max-w-md mx-auto">
-                Please set your <code>NEXT_PUBLIC_TMDB_API_KEY</code> to see the trending shows list.
+                We couldn't load the popular list right now. Try searching for your favorite show instead.
               </p>
             </div>
           )}
