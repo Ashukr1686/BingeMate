@@ -59,6 +59,8 @@ export function ShowDetails({ show }: ShowDetailsProps) {
     return "Life Odyssey";
   };
 
+  const formattedTotalTime = `${Math.floor(totalHours)} hours and ${totalRuntimeMinutes % 60} minutes`;
+
   return (
     <div className="w-full max-w-7xl mx-auto space-y-16 animate-in fade-in slide-in-from-bottom-12 duration-1000">
       {/* Hero Backdrop Overlay */}
@@ -173,6 +175,17 @@ export function ShowDetails({ show }: ShowDetailsProps) {
           </div>
 
           <div className="space-y-12 pt-8">
+            {/* Direct Answer: How long is the show */}
+            <div className="space-y-4">
+              <h2 className="text-4xl font-black text-white flex items-center gap-4">
+                <div className="h-10 w-2 bg-indigo-400 rounded-full" />
+                How long is {show.name}?
+              </h2>
+              <p className="text-muted-foreground font-semibold text-lg max-w-2xl leading-relaxed">
+                To watch all {totalEpisodes} episodes of {show.name} from start to finish, you'll need a total of <strong>{formattedTotalTime}</strong> of dedicated viewing time.
+              </p>
+            </div>
+
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-4">
                 <h2 className="text-4xl font-black text-white flex items-center gap-4">
@@ -263,7 +276,8 @@ export function ShowDetails({ show }: ShowDetailsProps) {
             </Card>
 
             <div className="flex items-center justify-center gap-3 py-10 text-muted-foreground/30 text-[10px] font-black uppercase tracking-[0.4em] animate-pulse">
-              <Info className="h-5 w-5" /> Professional TV show commitment calculator
+              <div className="bg-white/5 p-2 rounded-lg"><Info className="h-5 w-5" /></div>
+              Professional TV show commitment calculator
             </div>
           </div>
         </div>
