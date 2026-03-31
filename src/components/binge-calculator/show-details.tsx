@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { TVShow } from "@/types/tvmaze";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Calendar, PlayCircle, Star, Tv, Info, Clock, Share2, Heart, Sparkles, TrendingUp, Zap, FastForward, Activity, HelpCircle } from "lucide-react";
+import { Calendar, PlayCircle, Star, Tv, Clock, Share2, Heart, Sparkles, TrendingUp, Zap, FastForward, Activity, HelpCircle } from "lucide-react";
 import Image from "next/image";
 import { DurationDisplay } from "./duration-display";
 import { Slider } from "@/components/ui/slider";
@@ -304,11 +304,6 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                 </div>
               </div>
             </section>
-
-            <div className="flex items-center justify-center gap-3 py-10 text-muted-foreground/30 text-[10px] font-black uppercase tracking-[0.4em] animate-pulse">
-              <div className="bg-white/5 p-2 rounded-lg" aria-hidden="true"><Info className="h-5 w-5" /></div>
-              Professional TV show commitment calculator
-            </div>
           </div>
         </section>
       </div>
