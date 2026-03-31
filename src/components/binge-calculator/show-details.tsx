@@ -284,19 +284,22 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                     <h3 className="text-xl font-black text-white">Binge Benchmarks</h3>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {[3, 4, 5, 6].map((hours) => (
-                      <div 
-                        key={hours} 
-                        className="p-6 bg-white/5 rounded-3xl border border-white/5 hover:border-primary/20 transition-all flex flex-col justify-center gap-2 group"
-                      >
-                        <p className="text-sm font-bold text-muted-foreground group-hover:text-white transition-colors">
-                          How long to finish if I watch {hours} hours daily?
-                        </p>
-                        <p className="text-2xl font-black text-primary">
-                          {totalHours > 0 ? Math.ceil(totalHours / hours) : 0} Days
-                        </p>
-                      </div>
-                    ))}
+                    {[3, 4, 5, 6].map((hours) => {
+                      const benchmarkDays = totalHours > 0 ? Math.ceil(totalHours / hours) : 0;
+                      return (
+                        <div 
+                          key={hours} 
+                          className="p-8 bg-white/5 rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all flex flex-col justify-center gap-4 group"
+                        >
+                          <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">
+                            {hours} Hours Daily
+                          </p>
+                          <p className="text-lg font-bold text-muted-foreground group-hover:text-white transition-colors leading-relaxed">
+                            If you watch <strong>{show.name}</strong> daily for {hours} hours, you can finish it in <span className="text-white font-black">{benchmarkDays} days</span> easily.
+                          </p>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
