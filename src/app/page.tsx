@@ -190,9 +190,9 @@ export default function Home() {
         <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 text-sm text-muted-foreground font-bold">
           <p>© {new Date().getFullYear()} CineBy TV. Data via TMDB & TVMaze.</p>
           <nav className="flex gap-10">
-            <Link href="#" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Terms</Link>
-            <Link href="#" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Privacy</Link>
-            <Link href="#" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Support</Link>
+            <Link href="/terms" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Terms</Link>
+            <Link href="/privacy" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Privacy</Link>
+            <Link href="/support" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Support</Link>
           </nav>
         </div>
       </footer>

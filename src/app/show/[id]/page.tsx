@@ -70,8 +70,15 @@ export default async function ShowPage({ params }: Props) {
       </section>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-white/5 py-8 text-center text-muted-foreground text-sm">
-        <p>© {new Date().getFullYear()} CineBy TV • Professional Binge Watch Calculator</p>
+      <footer className="mt-auto border-t border-white/5 py-12 relative z-10 bg-black/20">
+        <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 text-sm text-muted-foreground font-bold">
+          <p>© {new Date().getFullYear()} CineBy TV. Data via TMDB & TVMaze.</p>
+          <nav className="flex gap-10">
+            <Link href="/terms" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Terms</Link>
+            <Link href="/privacy" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Privacy</Link>
+            <Link href="/support" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Support</Link>
+          </nav>
+        </div>
       </footer>
     </main>
   );
