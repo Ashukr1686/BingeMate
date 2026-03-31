@@ -15,15 +15,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!show) {
     return {
-      title: "Show Not Found | BingeMate",
+      title: "Show Not Found | CineBy TV",
     };
   }
 
   const cleanSummary = show.summary?.replace(/<[^>]*>?/gm, "").substring(0, 160) || "";
 
   return {
-    title: `How Long To Watch ${show.name} | BingeMate`,
-    description: `How long does it take to watch ${show.name}? Calculate the total episodes runtime and plan your binge watch schedule with our TV show commitment calculator. Average runtime: ${show.averageRuntime || 'N/A'} mins.`,
+    title: `How Long To Watch ${show.name} | CineBy TV`,
+    description: `How long does it take to watch ${show.name}? Calculate the total episodes runtime and plan your binge watch schedule with CineBy TV. Average runtime: ${show.averageRuntime || 'N/A'} mins.`,
     openGraph: {
       title: `How Long To Watch ${show.name}`,
       description: `Find out exactly how long it takes to watch ${show.name} with our series binge calculator and planner.`,
@@ -51,8 +51,8 @@ export default async function ShowPage({ params }: Props) {
           <div className="bg-primary p-2.5 rounded-xl shadow-lg shadow-primary/30 group-hover:rotate-12 transition-transform">
             <Tv className="h-6 w-6 text-white" />
           </div>
-          <span className="text-2xl font-black tracking-tighter text-white">
-            BINGE<span className="text-primary">MATE</span>
+          <span className="text-2xl font-black tracking-tighter text-white uppercase">
+            CINEBY<span className="text-primary"> TV</span>
           </span>
         </Link>
         <Link 
@@ -71,7 +71,7 @@ export default async function ShowPage({ params }: Props) {
 
       {/* Footer */}
       <footer className="mt-auto border-t border-white/5 py-8 text-center text-muted-foreground text-sm">
-        <p>© {new Date().getFullYear()} BingeMate • Professional Binge Watch Calculator</p>
+        <p>© {new Date().getFullYear()} CineBy TV • Professional Binge Watch Calculator</p>
       </footer>
     </main>
   );

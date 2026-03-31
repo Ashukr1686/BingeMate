@@ -60,12 +60,12 @@ export default function Home() {
       
       {/* Navigation */}
       <header className="container mx-auto px-6 py-10 relative z-50 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 group" aria-label="BingeMate Home">
+        <Link href="/" className="flex items-center gap-3 group" aria-label="CineBy TV Home">
           <div className="bg-primary p-3 rounded-2xl shadow-xl shadow-primary/20 group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-500">
             <MonitorPlay className="h-7 w-7 text-white" />
           </div>
           <span className="text-2xl font-black tracking-tight text-white uppercase italic">
-            Binge<span className="text-primary">Mate</span>
+            CineBy<span className="text-primary"> TV</span>
           </span>
         </Link>
         <nav className="hidden md:flex items-center gap-8">
@@ -99,7 +99,7 @@ export default function Home() {
 
       {/* How It Works Section */}
       <section className="mt-20 py-12 relative z-10" aria-labelledby="how-it-works-title">
-        <h2 id="how-it-works-title" className="sr-only">How BingeMate Works</h2>
+        <h2 id="how-it-works-title" className="sr-only">How CineBy TV Works</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mx-auto px-6">
           <article className="glass-panel p-8 rounded-[2.5rem] space-y-4 hover:scale-105 transition-transform duration-500">
             <div className="bg-primary/20 w-14 h-14 rounded-2xl flex items-center justify-center border border-primary/20">
@@ -188,7 +188,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="mt-auto border-t border-white/5 py-12 relative z-10 bg-black/20">
         <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 text-sm text-muted-foreground font-bold">
-          <p>© {new Date().getFullYear()} BingeMate. Data via TMDB & TVMaze.</p>
+          <p>© {new Date().getFullYear()} CineBy TV. Data via TMDB & TVMaze.</p>
           <nav className="flex gap-10">
             <Link href="#" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Terms</Link>
             <Link href="#" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Privacy</Link>
