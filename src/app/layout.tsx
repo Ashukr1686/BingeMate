@@ -19,7 +19,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased bg-[#1B1B26] text-[#CFD8DC]">{children}</body>
+      <body className="font-body antialiased bg-[#09090B] text-[#E2E8F0]">{children}</body>
     </html>
   );
 }

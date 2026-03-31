@@ -29,7 +29,6 @@ export default function Home() {
     
     setMatchingId(show.id);
     try {
-      // Use TVMaze singlesearch to find the best match by title
       const response = await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${encodeURIComponent(show.name)}`);
       if (response.ok) {
         const data = await response.json();
@@ -39,7 +38,6 @@ export default function Home() {
         }
       }
       
-      // Fallback: search normally if singlesearch fails
       const results = await searchShows(show.name);
       if (results.length > 0) {
         router.push(`/show/${results[0].show.id}`);
@@ -57,13 +55,13 @@ export default function Home() {
     <main className="min-h-screen bg-background relative overflow-hidden flex flex-col">
       {/* Playful Background Decor */}
       <div className="absolute inset-0 hero-gradient pointer-events-none" aria-hidden="true" />
-      <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/20 rounded-full blur-[120px] pointer-events-none animate-pulse" aria-hidden="true" />
-      <div className="absolute top-1/2 -right-24 w-64 h-64 bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none" aria-hidden="true" />
+      <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none animate-pulse" aria-hidden="true" />
+      <div className="absolute top-1/2 -right-24 w-64 h-64 bg-violet-500/5 rounded-full blur-[100px] pointer-events-none" aria-hidden="true" />
       
       {/* Navigation */}
       <header className="container mx-auto px-6 py-10 relative z-50 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group" aria-label="BingeMate Home">
-          <div className="bg-primary p-3 rounded-2xl shadow-xl shadow-primary/40 group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-500">
+          <div className="bg-primary p-3 rounded-2xl shadow-xl shadow-primary/20 group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-500">
             <MonitorPlay className="h-7 w-7 text-white" />
           </div>
           <span className="text-2xl font-black tracking-tight text-white uppercase italic">
@@ -72,7 +70,7 @@ export default function Home() {
         </Link>
         <nav className="hidden md:flex items-center gap-8">
           <a href="#trending" className="text-sm font-bold text-muted-foreground hover:text-white transition-colors flex items-center gap-2 group">
-            <Flame className="h-4 w-4 group-hover:text-orange-500 transition-colors" /> Trending
+            <Flame className="h-4 w-4 group-hover:text-primary transition-colors" /> Trending
           </a>
         </nav>
       </header>
@@ -85,7 +83,7 @@ export default function Home() {
           </div>
           <h1 className="text-7xl md:text-9xl font-black text-white tracking-tighter leading-[0.85] lg:leading-[0.8]">
             Your Next <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-indigo-400 to-cyan-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-violet-400 to-fuchsia-400">
               Great Binge
             </span>
           </h1>
@@ -111,15 +109,15 @@ export default function Home() {
             <p className="text-muted-foreground font-medium">Search using our <strong>Binge watch calculator</strong> to find any series.</p>
           </article>
           <article className="glass-panel p-8 rounded-[2.5rem] space-y-4 hover:scale-105 transition-transform duration-500">
-            <div className="bg-indigo-500/20 w-14 h-14 rounded-2xl flex items-center justify-center border border-indigo-500/20">
-              <Clock className="h-7 w-7 text-indigo-400" />
+            <div className="bg-violet-500/10 w-14 h-14 rounded-2xl flex items-center justify-center border border-violet-500/20">
+              <Clock className="h-7 w-7 text-violet-400" />
             </div>
             <h3 className="text-xl font-black text-white">2. Get the time</h3>
             <p className="text-muted-foreground font-medium">See the <strong>Total episodes runtime</strong> for a non-stop marathon.</p>
           </article>
           <article className="glass-panel p-8 rounded-[2.5rem] space-y-4 hover:scale-105 transition-transform duration-500">
-            <div className="bg-cyan-500/20 w-14 h-14 rounded-2xl flex items-center justify-center border border-cyan-500/20">
-              <Calendar className="h-7 w-7 text-cyan-400" />
+            <div className="bg-fuchsia-500/10 w-14 h-14 rounded-2xl flex items-center justify-center border border-fuchsia-500/20">
+              <Calendar className="h-7 w-7 text-fuchsia-400" />
             </div>
             <h3 className="text-xl font-black text-white">3. Plan your schedule</h3>
             <p className="text-muted-foreground font-medium">Use the <strong>Binge watch schedule tool</strong> to find your finish date.</p>
@@ -149,7 +147,7 @@ export default function Home() {
             {trendingShows.map((show, index) => (
               <article 
                 key={`${show.id}-${index}`}
-                className="group relative aspect-[2/3] rounded-[2rem] overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-500 binge-card-hover cursor-pointer"
+                className="group relative aspect-[2/3] rounded-[2rem] overflow-hidden border border-white/5 hover:border-primary/50 transition-all duration-500 binge-card-hover cursor-pointer"
                 onClick={() => handleTrendingClick(show)}
                 tabIndex={0}
                 onKeyDown={(e) => e.key === 'Enter' && handleTrendingClick(show)}

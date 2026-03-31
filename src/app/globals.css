@@ -4,31 +4,31 @@
 
 @layer base {
   :root {
-    --background: 240 17% 13%;
-    --foreground: 200 18% 90%;
-    --card: 240 17% 16%;
-    --card-foreground: 200 18% 90%;
-    --popover: 240 17% 13%;
-    --popover-foreground: 200 18% 90%;
-    --primary: 240 86% 61%;
+    --background: 240 10% 4%;
+    --foreground: 240 5% 96%;
+    --card: 240 10% 6%;
+    --card-foreground: 240 5% 96%;
+    --popover: 240 10% 4%;
+    --popover-foreground: 240 5% 96%;
+    --primary: 262 83% 58%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 240 10% 25%;
+    --secondary: 240 5% 15%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 240 10% 20%;
-    --muted-foreground: 200 10% 65%;
-    --accent: 200 18% 84%;
-    --accent-foreground: 240 17% 13%;
+    --muted: 240 5% 12%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 262 30% 90%;
+    --accent-foreground: 240 10% 4%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 240 10% 25%;
-    --input: 240 10% 25%;
-    --ring: 240 86% 61%;
+    --border: 240 5% 15%;
+    --input: 240 5% 15%;
+    --ring: 262 83% 58%;
     --radius: 1.5rem;
-    --chart-1: 240 86% 61%;
-    --chart-2: 200 18% 84%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --chart-1: 262 83% 58%;
+    --chart-2: 262 30% 90%;
+    --chart-3: 280 60% 50%;
+    --chart-4: 320 70% 50%;
+    --chart-5: 190 80% 50%;
   }
 }
 
@@ -43,15 +43,15 @@
 }
 
 .glass-panel {
-  @apply bg-card/40 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)];
+  @apply bg-card/40 backdrop-blur-2xl border border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)];
 }
 
 .hero-gradient {
-  background: radial-gradient(circle at top center, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle at top center, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
 }
 
 .binge-card-hover {
-  @apply transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/20 hover:shadow-2xl hover:border-primary/30;
+  @apply transition-all duration-500 hover:scale-[1.02] hover:shadow-primary/10 hover:shadow-2xl hover:border-primary/20;
 }
 
 @keyframes float {
