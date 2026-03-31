@@ -1,6 +1,6 @@
 import { SearchBar } from "@/components/binge-calculator/search-bar";
 import Link from "next/link";
-import { MonitorPlay, Flame, MonitorPlay as MonitorIcon, Sparkles, Search, Clock, Calendar } from "lucide-react";
+import { MonitorPlay, Flame, Sparkles, Search, Clock, Calendar } from "lucide-react";
 import { getTrendingShows } from "@/lib/tmdb";
 import { TrendingGrid } from "@/components/binge-calculator/trending-grid";
 import { Metadata } from "next";
@@ -51,7 +51,7 @@ export default async function Home() {
             </span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto font-medium leading-relaxed">
-            The ultimate <strong>Binge watch planner</strong>. Calculate <strong>total episodes runtime</strong> instantly and map out your marathon.
+            With our <strong>binge watch calculator</strong> find out how long it takes to <strong>binge a show</strong>.
           </p>
         </div>
         
