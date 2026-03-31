@@ -59,7 +59,7 @@ export default function Home() {
       <div className="absolute top-1/2 -right-24 w-64 h-64 bg-violet-500/5 rounded-full blur-[100px] pointer-events-none" aria-hidden="true" />
       
       {/* Navigation */}
-      <header className="container mx-auto px-6 py-10 relative z-50 flex items-center justify-between">
+      <header className="container mx-auto px-6 py-10 relative z-[60] flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group" aria-label="CineBy TV Home">
           <div className="bg-gradient-to-tr from-primary to-fuchsia-600 p-3 rounded-2xl shadow-xl shadow-primary/20 group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-500">
             <MonitorPlay className="h-7 w-7 text-white" />
@@ -76,7 +76,7 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center container mx-auto px-6 relative z-10 py-12 text-center">
+      <section className="flex flex-col items-center justify-center container mx-auto px-6 relative z-50 py-12 text-center">
         <div className="max-w-4xl mx-auto space-y-8 mb-16 animate-in fade-in slide-in-from-top-12 duration-1000">
           <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 border border-primary/20 text-xs font-black tracking-widest text-primary uppercase mb-4">
             <Sparkles className="h-3.5 w-3.5" /> Start Your Next Adventure
@@ -92,7 +92,7 @@ export default function Home() {
           </p>
         </div>
         
-        <div className="w-full max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200">
+        <div className="w-full max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200 relative z-50">
           <SearchBar />
         </div>
       </section>
@@ -126,7 +126,7 @@ export default function Home() {
       </section>
 
       {/* Trending Shows Grid (TMDB) */}
-      <section id="trending" className="mt-40 w-full max-w-6xl mx-auto space-y-12 mb-32 px-6" aria-labelledby="trending-title">
+      <section id="trending" className="mt-40 w-full max-w-6xl mx-auto space-y-12 mb-32 px-6 relative z-10" aria-labelledby="trending-title">
         <div className="flex items-end justify-between">
           <div className="space-y-2">
             <h2 id="trending-title" className="text-4xl font-black text-white tracking-tight">Trending This Week</h2>
