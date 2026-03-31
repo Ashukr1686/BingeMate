@@ -1,6 +1,6 @@
 import { getShowDetails } from "@/lib/tvmaze";
 import { ShowDetails } from "@/components/binge-calculator/show-details";
-import { Tv, ChevronLeft } from "lucide-react";
+import { MonitorPlay, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -47,12 +47,12 @@ export default async function ShowPage({ params }: Props) {
 
       {/* Header/Nav */}
       <header className="container mx-auto px-6 py-8 relative z-50 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="bg-primary p-2.5 rounded-xl shadow-lg shadow-primary/30 group-hover:rotate-12 transition-transform">
-            <Tv className="h-6 w-6 text-white" />
+        <Link href="/" className="flex items-center gap-3 group" aria-label="CineBy TV Home">
+          <div className="bg-gradient-to-tr from-primary to-fuchsia-600 p-2.5 rounded-xl shadow-lg shadow-primary/30 group-hover:rotate-12 transition-transform">
+            <MonitorPlay className="h-6 w-6 text-white" />
           </div>
-          <span className="text-2xl font-black tracking-tighter text-white uppercase">
-            CINEBY<span className="text-primary"> TV</span>
+          <span className="text-2xl font-black tracking-tight text-white uppercase italic">
+            CineBy<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400"> TV</span>
           </span>
         </Link>
         <Link 

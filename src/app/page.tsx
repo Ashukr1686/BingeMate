@@ -61,11 +61,11 @@ export default function Home() {
       {/* Navigation */}
       <header className="container mx-auto px-6 py-10 relative z-50 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group" aria-label="CineBy TV Home">
-          <div className="bg-primary p-3 rounded-2xl shadow-xl shadow-primary/20 group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-500">
+          <div className="bg-gradient-to-tr from-primary to-fuchsia-600 p-3 rounded-2xl shadow-xl shadow-primary/20 group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-500">
             <MonitorPlay className="h-7 w-7 text-white" />
           </div>
           <span className="text-2xl font-black tracking-tight text-white uppercase italic">
-            CineBy<span className="text-primary"> TV</span>
+            CineBy<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400"> TV</span>
           </span>
         </Link>
         <nav className="hidden md:flex items-center gap-8">
