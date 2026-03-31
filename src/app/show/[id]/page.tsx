@@ -46,7 +46,7 @@ export default async function ShowPage({ params }: Props) {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
 
       {/* Header/Nav */}
-      <header className="container mx-auto px-6 py-8 relative z-50 flex items-center justify-between">
+      <header className="container mx-auto px-8 md:px-16 lg:px-24 py-10 relative z-50 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group" aria-label="CineBy TV Home">
           <div className="bg-gradient-to-tr from-primary to-fuchsia-600 p-2.5 rounded-xl shadow-lg shadow-primary/30 group-hover:rotate-12 transition-transform">
             <MonitorPlay className="h-6 w-6 text-white" />
@@ -65,7 +65,7 @@ export default async function ShowPage({ params }: Props) {
       </header>
 
       {/* Content Section */}
-      <section className="container mx-auto px-4 pb-20 relative z-10">
+      <section className="container mx-auto px-8 md:px-16 lg:px-24 pb-24 relative z-10">
         <ShowDetails show={show} />
       </section>
 
