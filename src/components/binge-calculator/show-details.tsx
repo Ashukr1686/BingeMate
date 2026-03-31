@@ -291,9 +291,9 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                           key={hours} 
                           className="p-8 bg-white/5 rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all flex flex-col justify-center gap-4 group"
                         >
-                          <h4 className="text-sm font-black text-primary uppercase tracking-[0.1em]">
+                          <h2 className="text-sm font-black text-primary uppercase tracking-[0.1em]">
                             How long to finish if I watch {hours} hours daily?
-                          </h4>
+                          </h2>
                           <p className="text-lg font-bold text-muted-foreground group-hover:text-white transition-colors leading-relaxed">
                             If you watch <strong>{show.name}</strong> daily for {hours} hours, you can finish it in <span className="text-white font-black">{benchmarkDays} days</span> easily.
                           </p>
