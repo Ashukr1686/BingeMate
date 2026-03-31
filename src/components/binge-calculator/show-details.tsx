@@ -194,7 +194,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                     How long does it take to watch without breaks?
                   </h2>
                   <p className="text-muted-foreground font-semibold text-lg max-w-2xl leading-relaxed">
-                    Calculate the <strong>Total episodes runtime</strong> by accounting for every single installment. This represents the cumulative duration of all episodes combined for your binge journey.
+                    If you watch <strong>{show.name}</strong> continuously for 24 hours without taking any breaks, it would take -
                   </p>
                 </div>
 
