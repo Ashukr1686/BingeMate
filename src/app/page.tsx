@@ -64,7 +64,7 @@ export default function Home() {
           <div className="bg-gradient-to-tr from-primary to-fuchsia-600 p-3 rounded-2xl shadow-xl shadow-primary/20 group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-500">
             <MonitorPlay className="h-7 w-7 text-white" />
           </div>
-          <span className="text-3xl font-black tracking-tighter text-white uppercase italic drop-shadow-[0_2px_10px_rgba(139,92,246,0.3)]">
+          <span className="text-4xl font-logo tracking-wider text-white uppercase drop-shadow-[0_2px_15px_rgba(139,92,246,0.4)]">
             CineBy<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400"> TV</span>
           </span>
         </Link>
