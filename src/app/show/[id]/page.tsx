@@ -51,7 +51,7 @@ export default async function ShowPage({ params }: Props) {
           <div className="bg-gradient-to-tr from-primary to-fuchsia-600 p-2.5 rounded-xl shadow-lg shadow-primary/30 group-hover:rotate-12 transition-transform">
             <MonitorPlay className="h-6 w-6 text-white" />
           </div>
-          <span className="text-2xl font-black tracking-tight text-white uppercase italic">
+          <span className="text-3xl font-black tracking-tighter text-white uppercase italic drop-shadow-[0_2px_10px_rgba(139,92,246,0.3)]">
             CineBy<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400"> TV</span>
           </span>
         </Link>
