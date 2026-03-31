@@ -6,7 +6,7 @@ import { TrendingGrid } from "@/components/binge-calculator/trending-grid";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'CineBy TV | Binge Watch Calculator & TV Series Binge Planner',
+  title: 'CineBy TV | How Long to Binge a Show? Free Watch Time Calculator',
   description: 'Calculate exactly how long it takes to binge your favorite TV shows. Plan your marathon with our total episodes runtime calculator.',
 };
 
