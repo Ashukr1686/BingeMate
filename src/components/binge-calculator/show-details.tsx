@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { TVShow } from "@/types/tvmaze";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Calendar, PlayCircle, Star, Tv, Info, Clock, Share2, Heart, Sparkles, TrendingUp, Zap, FastForward, Activity } from "lucide-react";
+import { Calendar, PlayCircle, Star, Tv, Info, Clock, Share2, Heart, Sparkles, TrendingUp, Zap, FastForward, Activity, HelpCircle } from "lucide-react";
 import Image from "next/image";
 import { DurationDisplay } from "./duration-display";
 import { Slider } from "@/components/ui/slider";
@@ -274,6 +274,29 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                     <span className="text-primary text-[10px] uppercase font-black tracking-[0.3em] mb-4 block">The Finale</span>
                     <p className="text-5xl font-black text-primary tracking-tighter">{format(finishDate, 'MMM do')}</p>
                     <p className="text-xl font-black text-primary/40 mt-1">{format(finishDate, 'yyyy')}</p>
+                  </div>
+                </div>
+
+                {/* Quick Reference Questions */}
+                <div className="pt-12 space-y-8">
+                  <div className="flex items-center gap-3">
+                    <HelpCircle className="h-5 w-5 text-primary" />
+                    <h3 className="text-xl font-black text-white">Binge Benchmarks</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {[3, 4, 5, 6].map((hours) => (
+                      <div 
+                        key={hours} 
+                        className="p-6 bg-white/5 rounded-3xl border border-white/5 hover:border-primary/20 transition-all flex flex-col justify-center gap-2 group"
+                      >
+                        <p className="text-sm font-bold text-muted-foreground group-hover:text-white transition-colors">
+                          How long to finish if I watch {hours} hours daily?
+                        </p>
+                        <p className="text-2xl font-black text-primary">
+                          {totalHours > 0 ? Math.ceil(totalHours / hours) : 0} Days
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
