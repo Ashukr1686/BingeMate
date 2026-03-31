@@ -41,9 +41,6 @@ export default async function Home() {
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center container mx-auto px-6 relative z-50 py-12 text-center">
         <div className="max-w-4xl mx-auto space-y-8 mb-16 animate-in fade-in slide-in-from-top-12 duration-1000">
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 border border-primary/20 text-xs font-black tracking-widest text-primary uppercase mb-4">
-            <Sparkles className="h-3.5 w-3.5" /> Start Your Next Adventure
-          </div>
           <h1 className="text-7xl md:text-9xl font-black text-white tracking-tighter leading-[0.85] lg:leading-[0.8]">
             How long to <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-violet-400 to-fuchsia-400">
