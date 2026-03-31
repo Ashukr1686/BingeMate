@@ -82,9 +82,9 @@ export default function Home() {
             <Sparkles className="h-3.5 w-3.5" /> Start Your Next Adventure
           </div>
           <h1 className="text-7xl md:text-9xl font-black text-white tracking-tighter leading-[0.85] lg:leading-[0.8]">
-            Your Next <br />
+            How long to <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-violet-400 to-fuchsia-400">
-              Great Binge
+              binge?
             </span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto font-medium leading-relaxed">
