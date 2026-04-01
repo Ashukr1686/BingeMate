@@ -227,8 +227,11 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                   <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">
                     <span aria-hidden="true"><Sparkles className="h-3 w-3" /></span> Interactive Planner
                   </div>
-                  <h2 id="planner-title" className="text-4xl font-black text-white tracking-tight">
-                    {show.name} <span className="text-2xl font-bold text-muted-foreground block md:inline md:ml-2">Personal Schedule</span>
+                  <h2 id="planner-title" className="text-4xl md:text-5xl font-black text-white tracking-tight flex flex-wrap items-baseline gap-x-4">
+                    <span>{show.name}</span>
+                    <span className="text-2xl font-bold text-muted-foreground whitespace-nowrap">
+                      Personal Schedule
+                    </span>
                   </h2>
                   <div className="flex items-center gap-3">
                     <Activity className={cn("h-5 w-5", intensity.color)} />
