@@ -225,10 +225,10 @@ export function ShowDetails({ show }: ShowDetailsProps) {
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-10">
                 <div className="space-y-4">
                   <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">
-                    <Sparkles className="h-3 w-3" /> Interactive Planner
+                    <span aria-hidden="true"><Sparkles className="h-3 w-3" /></span> Interactive Planner
                   </div>
                   <h2 id="planner-title" className="text-4xl font-black text-white tracking-tight">
-                    Personal Schedule <span className="text-sm font-bold text-muted-foreground block md:inline md:ml-2">for {show.name}</span>
+                    {show.name} <span className="text-2xl font-bold text-muted-foreground block md:inline md:ml-2">Personal Schedule</span>
                   </h2>
                   <div className="flex items-center gap-3">
                     <Activity className={cn("h-5 w-5", intensity.color)} />
