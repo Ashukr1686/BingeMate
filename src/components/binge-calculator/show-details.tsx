@@ -266,7 +266,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-12 border-t border-white/5">
                   <div className="bg-white/5 p-10 rounded-[2.5rem] border border-white/5 group hover:bg-white/10 transition-all flex flex-col justify-center">
-                    <span className="text-muted-foreground text-[10px] uppercase font-black tracking-[0.3em] mb-4 block">Commitment</span>
+                    <span className="text-muted-foreground text-[10px] uppercase font-black tracking-[0.3em] mb-4 block">Finishes In</span>
                     <div className="flex items-baseline gap-2">
                       <p className="text-5xl font-black text-white tracking-tighter">{daysToFinish}</p>
                       <span className="text-xl font-bold text-muted-foreground">Days</span>
@@ -274,37 +274,37 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                   </div>
                   <div className="bg-primary/10 p-10 rounded-[2.5rem] border border-primary/20 group hover:bg-primary/20 transition-all flex flex-col justify-center relative overflow-hidden">
                     <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/20 blur-3xl rounded-full" aria-hidden="true" />
-                    <span className="text-primary text-[10px] uppercase font-black tracking-[0.3em] mb-4 block">The Finale</span>
+                    <span className="text-primary text-[10px] uppercase font-black tracking-[0.3em] mb-4 block">Finale On</span>
                     <p className="text-5xl font-black text-primary tracking-tighter">{format(finishDate, 'MMM do')}</p>
                     <p className="text-xl font-black text-primary/40 mt-1">{format(finishDate, 'yyyy')}</p>
                   </div>
                 </div>
+              </div>
+            </section>
 
-                {/* Quick Reference Questions */}
-                <div className="pt-12 space-y-8">
-                  <div className="flex items-center gap-3">
-                    <HelpCircle className="h-5 w-5 text-primary" />
-                    <h3 className="text-xl font-black text-white">Binge Benchmarks</h3>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {[3, 4, 5, 6].map((hours) => {
-                      const benchmarkDays = totalHours > 0 ? Math.ceil(totalHours / hours) : 0;
-                      return (
-                        <div 
-                          key={hours} 
-                          className="p-8 bg-white/5 rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all flex flex-col justify-center gap-4 group"
-                        >
-                          <h2 className="text-sm font-black text-primary uppercase tracking-[0.1em]">
-                            How long to finish if I watch {hours} hours daily?
-                          </h2>
-                          <p className="text-lg font-bold text-muted-foreground group-hover:text-white transition-colors leading-relaxed">
-                            If you watch <strong>{show.name}</strong> daily for {hours} hours, you can finish it in <span className="text-white font-black">{benchmarkDays} days</span> easily.
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
+            {/* Binge Benchmarks Section */}
+            <section className="pt-12 space-y-8" aria-labelledby="benchmarks-title">
+              <div className="flex items-center gap-3">
+                <HelpCircle className="h-5 w-5 text-primary" />
+                <h2 id="benchmarks-title" className="text-3xl font-black text-white">Binge Benchmarks</h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {[3, 4, 5, 6].map((hours) => {
+                  const benchmarkDays = totalHours > 0 ? Math.ceil(totalHours / hours) : 0;
+                  return (
+                    <div 
+                      key={hours} 
+                      className="p-8 bg-white/5 rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all flex flex-col justify-center gap-4 group"
+                    >
+                      <h3 className="text-sm font-black text-primary uppercase tracking-[0.1em]">
+                        How long to finish if I watch {hours} hours daily?
+                      </h3>
+                      <p className="text-lg font-bold text-muted-foreground group-hover:text-white transition-colors leading-relaxed">
+                        If you watch <strong>{show.name}</strong> daily for {hours} hours, you can finish it in <span className="text-white font-black">{benchmarkDays} days</span> easily.
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </section>
           </div>
