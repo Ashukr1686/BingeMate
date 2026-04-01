@@ -228,7 +228,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                     <Sparkles className="h-3 w-3" /> Interactive Planner
                   </div>
                   <h2 id="planner-title" className="text-4xl font-black text-white tracking-tight">
-                    Personal Schedule
+                    Personal Schedule <span className="text-sm font-bold text-muted-foreground block md:inline md:ml-2">for {show.name}</span>
                   </h2>
                   <div className="flex items-center gap-3">
                     <Activity className={cn("h-5 w-5", intensity.color)} />
