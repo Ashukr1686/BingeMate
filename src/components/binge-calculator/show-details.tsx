@@ -1,10 +1,11 @@
+
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { TVShow } from "@/types/tvmaze";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Calendar, PlayCircle, Star, Tv, Clock, Share2, Heart, Sparkles, TrendingUp, Zap, FastForward, Activity, HelpCircle } from "lucide-react";
+import { Calendar, PlayCircle, Star, Tv, Clock, Share2, Heart, Sparkles, TrendingUp, Zap, FastForward, Activity, HelpCircle, Download, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { DurationDisplay } from "./duration-display";
 import { Slider } from "@/components/ui/slider";
@@ -13,6 +14,8 @@ import { format, addDays } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+import { toPng } from 'html-to-image';
+import { useToast } from "@/hooks/use-toast";
 
 interface ShowDetailsProps {
   show: TVShow;
@@ -21,17 +24,19 @@ interface ShowDetailsProps {
 export function ShowDetails({ show }: ShowDetailsProps) {
   const [hoursPerDay, setHoursPerDay] = useState([3]);
   const [skipIntros, setSkipIntros] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const plannerRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
   
   const episodes = show._embedded?.episodes || [];
   const totalEpisodes = episodes.length;
   const avgRuntime = show.averageRuntime || 45;
   
-  // Calculate runtime with optional "Skip Intros" (deduct 3 mins per episode)
   const totalRuntimeMinutes = useMemo(() => {
     return episodes.reduce((acc, ep) => {
       let runtime = ep.runtime || show.averageRuntime || 30;
       if (skipIntros && runtime > 5) {
-        runtime -= 3; // Subtract 3 mins for intro/credits
+        runtime -= 3;
       }
       return acc + runtime;
     }, 0);
@@ -41,7 +46,6 @@ export function ShowDetails({ show }: ShowDetailsProps) {
   const daysToFinish = totalHours > 0 ? Math.ceil(totalHours / hoursPerDay[0]) : 0;
   const finishDate = addDays(new Date(), daysToFinish);
 
-  // Binge Intensity Logic
   const getIntensity = (hours: number) => {
     if (hours <= 1) return { label: "Casual", color: "text-blue-400", bg: "bg-blue-500/10" };
     if (hours <= 3) return { label: "Dedicated", color: "text-green-400", bg: "bg-green-500/10" };
@@ -51,7 +55,6 @@ export function ShowDetails({ show }: ShowDetailsProps) {
 
   const intensity = getIntensity(hoursPerDay[0]);
 
-  // Difficulty Rating based on total hours
   const getDifficulty = (hours: number) => {
     if (hours < 10) return "Quick Sprint";
     if (hours < 30) return "Weekend Warrior";
@@ -61,9 +64,40 @@ export function ShowDetails({ show }: ShowDetailsProps) {
 
   const formattedTotalTime = `${Math.floor(totalHours)} hours and ${totalRuntimeMinutes % 60} minutes`;
 
+  const handleSaveImage = async () => {
+    if (!plannerRef.current) return;
+    setIsExporting(true);
+    try {
+      const dataUrl = await toPng(plannerRef.current, {
+        cacheBust: true,
+        backgroundColor: '#09090B',
+        style: {
+          borderRadius: '2.5rem',
+        },
+        pixelRatio: 2,
+      });
+      const link = document.createElement('a');
+      link.download = `${show.name.replace(/\s+/g, '-').toLowerCase()}-binge-plan.png`;
+      link.href = dataUrl;
+      link.click();
+      toast({
+        title: "Schedule Saved!",
+        description: "Your binge watch plan has been downloaded as an image.",
+      });
+    } catch (err) {
+      console.error('Failed to save image', err);
+      toast({
+        variant: "destructive",
+        title: "Export Failed",
+        description: "Could not generate the image. Please try again.",
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto space-y-16 animate-in fade-in slide-in-from-bottom-12 duration-1000">
-      {/* Hero Backdrop Overlay */}
       <div className="absolute top-0 left-0 w-full h-[800px] overflow-hidden -z-10 opacity-30" aria-hidden="true">
         {show.image?.original && (
           <Image
@@ -77,7 +111,6 @@ export function ShowDetails({ show }: ShowDetailsProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-        {/* Left: Poster & Quick Actions */}
         <aside className="lg:col-span-4 space-y-10 lg:sticky lg:top-8">
           <Card className="overflow-hidden border-white/10 bg-transparent shadow-[0_50px_100px_-20px_rgba(0,0,0,0.8)] relative aspect-[2/3] group rounded-[2.5rem] binge-card-hover">
             {show.image?.original ? (
@@ -118,7 +151,6 @@ export function ShowDetails({ show }: ShowDetailsProps) {
           </div>
         </aside>
 
-        {/* Right: Info & Binge Logic */}
         <section className="lg:col-span-8 space-y-12">
           <header className="space-y-8">
             <div className="space-y-6">
@@ -175,7 +207,6 @@ export function ShowDetails({ show }: ShowDetailsProps) {
           </div>
 
           <div className="space-y-12 pt-8">
-            {/* Direct Answer: How long is the show */}
             <article className="space-y-4" aria-labelledby="how-long-title">
               <h2 id="how-long-title" className="text-4xl font-black text-white flex items-center gap-4">
                 <div className="h-10 w-2 bg-indigo-400 rounded-full" aria-hidden="true" />
@@ -198,7 +229,6 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                   </p>
                 </div>
 
-                {/* Skip Intros Toggle */}
                 <div className="glass-panel p-6 rounded-[2rem] flex items-center gap-6 border-white/10 hover:bg-white/5 transition-colors">
                   <div className="bg-primary/20 p-3 rounded-xl" aria-hidden="true">
                     <FastForward className="h-5 w-5 text-primary" />
@@ -219,7 +249,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
               <DurationDisplay totalMinutes={totalRuntimeMinutes} />
             </article>
             
-            <section className="p-12 glass-panel border-white/10 space-y-12 rounded-[3.5rem] binge-card-hover overflow-hidden relative" aria-labelledby="planner-title">
+            <section ref={plannerRef} className="p-12 glass-panel border-white/10 space-y-12 rounded-[3.5rem] binge-card-hover overflow-hidden relative" aria-labelledby="planner-title">
               <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 blur-[100px] rounded-full pointer-events-none" aria-hidden="true" />
               
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-10">
@@ -280,9 +310,20 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                   </div>
                 </div>
               </div>
+
+              <div className="pt-8 flex justify-end">
+                <Button 
+                  onClick={handleSaveImage} 
+                  disabled={isExporting}
+                  variant="outline" 
+                  className="rounded-2xl border-white/10 text-white font-black hover:bg-white/10 gap-2 h-12 px-6"
+                >
+                  {isExporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                  {isExporting ? "Exporting..." : "Save as Image"}
+                </Button>
+              </div>
             </section>
 
-            {/* Binge Benchmarks Section */}
             <section className="pt-12 space-y-8" aria-labelledby="benchmarks-title">
               <div className="flex items-center gap-3">
                 <HelpCircle className="h-5 w-5 text-primary" />
