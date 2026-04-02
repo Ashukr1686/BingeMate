@@ -304,7 +304,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                   </div>
                   <div className="bg-primary/10 p-10 rounded-[2.5rem] border border-primary/20 group hover:bg-primary/20 transition-all flex flex-col justify-center relative overflow-hidden">
                     <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/20 blur-3xl rounded-full" aria-hidden="true" />
-                    <span className="text-primary text-[10px] uppercase font-black tracking-[0.3em] mb-4 block">Finale On</span>
+                    <span className="text-primary text-[10px] uppercase font-black tracking-[0.3em] mb-4 block">Finishes on</span>
                     <p className="text-5xl font-black text-primary tracking-tighter">{format(finishDate, 'MMM do')}</p>
                     <p className="text-xl font-black text-primary/40 mt-1">{format(finishDate, 'yyyy')}</p>
                   </div>
