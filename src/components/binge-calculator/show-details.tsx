@@ -5,7 +5,7 @@ import { useState, useMemo, useRef } from "react";
 import { TVShow } from "@/types/tvmaze";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Calendar, PlayCircle, Star, Tv, Clock, Share2, Heart, Sparkles, TrendingUp, Zap, FastForward, Activity, HelpCircle, Download, Loader2 } from "lucide-react";
+import { Calendar, PlayCircle, Star, Tv, Clock, Share2, Heart, Sparkles, TrendingUp, Zap, FastForward, Activity, HelpCircle, Download, Loader2, Scissors } from "lucide-react";
 import Image from "next/image";
 import { DurationDisplay } from "./duration-display";
 import { Slider } from "@/components/ui/slider";
@@ -24,6 +24,7 @@ interface ShowDetailsProps {
 export function ShowDetails({ show }: ShowDetailsProps) {
   const [hoursPerDay, setHoursPerDay] = useState([3]);
   const [skipIntros, setSkipIntros] = useState(false);
+  const [skipCredits, setSkipCredits] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const plannerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -32,15 +33,26 @@ export function ShowDetails({ show }: ShowDetailsProps) {
   const totalEpisodes = episodes.length;
   const avgRuntime = show.averageRuntime || 45;
   
-  const totalRuntimeMinutes = useMemo(() => {
-    return episodes.reduce((acc, ep) => {
+  const { totalRuntimeMinutes, timeSavedMinutes } = useMemo(() => {
+    let saved = 0;
+    const total = episodes.reduce((acc, ep) => {
       let runtime = ep.runtime || show.averageRuntime || 30;
-      if (skipIntros && runtime > 5) {
-        runtime -= 3;
+      let originalRuntime = runtime;
+      
+      if (runtime > 10) {
+        if (skipIntros) runtime -= 1.5;
+        if (skipCredits) runtime -= 2.5;
       }
+      
+      saved += (originalRuntime - runtime);
       return acc + runtime;
     }, 0);
-  }, [episodes, show.averageRuntime, skipIntros]);
+    
+    return { 
+      totalRuntimeMinutes: Math.max(0, Math.round(total)), 
+      timeSavedMinutes: Math.round(saved) 
+    };
+  }, [episodes, show.averageRuntime, skipIntros, skipCredits]);
   
   const totalHours = totalRuntimeMinutes / 60;
   const daysToFinish = totalHours > 0 ? Math.ceil(totalHours / hoursPerDay[0]) : 0;
@@ -63,6 +75,13 @@ export function ShowDetails({ show }: ShowDetailsProps) {
   };
 
   const formattedTotalTime = `${Math.floor(totalHours)} hours and ${totalRuntimeMinutes % 60} minutes`;
+  
+  const formatSavedTime = (mins: number) => {
+    if (mins < 60) return `${mins}m`;
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return `${h}h ${m}m`;
+  };
 
   const handleSaveImage = async () => {
     if (!plannerRef.current) return;
@@ -130,7 +149,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
             
             <div className="absolute top-8 right-8 flex flex-col gap-3 items-end">
               {show.rating?.average && (
-                <div className="bg-primary backdrop-blur-xl text-white px-5 py-3 rounded-2xl font-black flex items-center gap-2 shadow-2xl border border-white/20 text-lg" aria-label={`Average rating: ${show.rating.average}`}>
+                <div className="bg-primary backdrop-blur-xl text-white px-5 py-3 rounded-2xl font-black flex items-center gap-2 shadow-2xl border border-white/20 text-lg">
                   <Star className="h-5 w-5 fill-white" />
                   {show.rating.average}
                 </div>
@@ -229,35 +248,57 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                   </p>
                 </div>
 
-                <div className="glass-panel p-6 rounded-[2rem] flex items-center gap-6 border-white/10 hover:bg-white/5 transition-colors">
-                  <div className="bg-primary/20 p-3 rounded-xl" aria-hidden="true">
-                    <FastForward className="h-5 w-5 text-primary" />
+                <div className="flex flex-wrap gap-4">
+                  <div className="glass-panel p-4 rounded-[1.5rem] flex items-center gap-4 border-white/10 hover:bg-white/5 transition-colors">
+                    <div className="space-y-1">
+                      <Label htmlFor="skip-intros" className="text-[10px] font-black uppercase tracking-wider text-white">Skip Intros</Label>
+                      <p className="text-[9px] text-muted-foreground font-bold">-1.5m / ep</p>
+                    </div>
+                    <Switch 
+                      id="skip-intros" 
+                      checked={skipIntros} 
+                      onCheckedChange={setSkipIntros}
+                      className="data-[state=checked]:bg-primary"
+                    />
                   </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="skip-intros" className="text-xs font-black uppercase tracking-wider text-white">Skip Intros</Label>
-                    <p className="text-[10px] text-muted-foreground font-bold">-3m / episode</p>
+                  <div className="glass-panel p-4 rounded-[1.5rem] flex items-center gap-4 border-white/10 hover:bg-white/5 transition-colors">
+                    <div className="space-y-1">
+                      <Label htmlFor="skip-credits" className="text-[10px] font-black uppercase tracking-wider text-white">Skip Credits</Label>
+                      <p className="text-[9px] text-muted-foreground font-bold">-2.5m / ep</p>
+                    </div>
+                    <Switch 
+                      id="skip-credits" 
+                      checked={skipCredits} 
+                      onCheckedChange={setSkipCredits}
+                      className="data-[state=checked]:bg-primary"
+                    />
                   </div>
-                  <Switch 
-                    id="skip-intros" 
-                    checked={skipIntros} 
-                    onCheckedChange={setSkipIntros}
-                    className="data-[state=checked]:bg-primary"
-                  />
+                  {timeSavedMinutes > 0 && (
+                    <div className="bg-green-500/10 border border-green-500/20 p-4 rounded-[1.5rem] flex items-center gap-3 animate-in fade-in zoom-in-95">
+                      <div className="bg-green-500/20 p-2 rounded-lg">
+                        <Scissors className="h-4 w-4 text-green-400" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-green-400">Time Saved</p>
+                        <p className="text-sm font-black text-white">{formatSavedTime(timeSavedMinutes)}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               
               <DurationDisplay totalMinutes={totalRuntimeMinutes} />
             </article>
             
-            <section ref={plannerRef} className="p-12 glass-panel border-white/10 space-y-12 rounded-[3.5rem] binge-card-hover overflow-hidden relative" aria-labelledby="planner-title">
+            <section ref={plannerRef} className="p-12 glass-panel border-white/10 space-y-12 rounded-[3.5rem] binge-card-hover overflow-hidden relative">
               <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 blur-[100px] rounded-full pointer-events-none" aria-hidden="true" />
               
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-10">
                 <div className="space-y-4">
                   <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">
-                    <span aria-hidden="true"><Sparkles className="h-3 w-3" /></span> Interactive Planner
+                    <Sparkles className="h-3 w-3" /> Interactive Planner
                   </div>
-                  <h2 id="planner-title" className="text-4xl md:text-5xl font-black text-white tracking-tight flex flex-wrap items-baseline gap-x-4">
+                  <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight flex flex-wrap items-baseline gap-x-4">
                     <span>{show.name}</span>
                     <span className="text-2xl font-bold text-muted-foreground whitespace-nowrap">
                       Personal Schedule
@@ -278,9 +319,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
 
               <div className="space-y-12">
                 <div className="px-2">
-                  <Label htmlFor="daily-slider" className="sr-only">Adjust daily viewing hours</Label>
                   <Slider
-                    id="daily-slider"
                     value={hoursPerDay}
                     onValueChange={setHoursPerDay}
                     max={24}
@@ -288,7 +327,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                     step={0.5}
                     className="py-6"
                   />
-                  <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-muted-foreground pt-2" aria-hidden="true">
+                  <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-muted-foreground pt-2">
                     <span>Just a taste</span>
                     <span>All-in marathon</span>
                   </div>
