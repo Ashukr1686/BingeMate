@@ -326,17 +326,6 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                         className="data-[state=checked]:bg-primary"
                       />
                     </div>
-                    {timeSavedMinutes > 0 && (
-                      <div className="bg-green-500/10 border border-green-500/20 p-4 rounded-[1.5rem] flex items-center gap-3 animate-in fade-in zoom-in-95">
-                        <div className="bg-green-500/20 p-2 rounded-lg">
-                          <Scissors className="h-4 w-4 text-green-400" />
-                        </div>
-                        <div>
-                          <p className="text-[9px] font-black uppercase tracking-widest text-green-400">Time Saved</p>
-                          <p className="text-sm font-black text-white">{formatSavedTime(timeSavedMinutes)}</p>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </div>
                 
