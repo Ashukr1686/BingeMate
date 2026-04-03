@@ -31,6 +31,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
   const [creditsDuration, setCreditsDuration] = useState(2.5);
   const [isExporting, setIsExporting] = useState(false);
   const plannerRef = useRef<HTMLDivElement>(null);
+  const durationRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
   const episodes = show._embedded?.episodes || [];
@@ -87,25 +88,26 @@ export function ShowDetails({ show }: ShowDetailsProps) {
     return `${h}h ${m}m`;
   };
 
-  const handleSaveImage = async () => {
-    if (!plannerRef.current) return;
+  const handleExport = async (ref: React.RefObject<HTMLDivElement | null>, filename: string) => {
+    if (!ref.current) return;
     setIsExporting(true);
     try {
-      const dataUrl = await toPng(plannerRef.current, {
+      const dataUrl = await toPng(ref.current, {
         cacheBust: true,
         backgroundColor: '#09090B',
         style: {
           borderRadius: '2.5rem',
+          padding: '2rem'
         },
         pixelRatio: 2,
       });
       const link = document.createElement('a');
-      link.download = `${show.name.replace(/\s+/g, '-').toLowerCase()}-binge-plan.png`;
+      link.download = `${show.name.replace(/\s+/g, '-').toLowerCase()}-${filename}.png`;
       link.href = dataUrl;
       link.click();
       toast({
-        title: "Schedule Saved!",
-        description: "Your binge watch plan has been downloaded as an image.",
+        title: "Image Saved!",
+        description: "Your binge stats have been downloaded.",
       });
     } catch (err) {
       console.error('Failed to save image', err);
@@ -240,105 +242,118 @@ export function ShowDetails({ show }: ShowDetailsProps) {
               </p>
             </article>
 
-            <article className="space-y-12" aria-labelledby="without-breaks-title">
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div className="space-y-4">
-                  <h2 id="without-breaks-title" className="text-4xl font-black text-white flex items-center gap-4">
-                    <div className="h-10 w-2 bg-primary rounded-full" aria-hidden="true" />
-                    How long does it take to watch without breaks?
-                  </h2>
-                  <p className="text-muted-foreground font-semibold text-lg max-w-2xl leading-relaxed">
-                    If you watch <strong>{show.name}</strong> continuously for 24 hours without taking any breaks, it would take -
-                  </p>
-                </div>
+            <div ref={durationRef} className="space-y-12 p-2 rounded-[3.5rem] relative overflow-hidden group/duration">
+              <article className="space-y-12" aria-labelledby="without-breaks-title">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                  <div className="space-y-4">
+                    <h2 id="without-breaks-title" className="text-4xl font-black text-white flex items-center gap-4">
+                      <div className="h-10 w-2 bg-primary rounded-full" aria-hidden="true" />
+                      How long does it take to watch without breaks?
+                    </h2>
+                    <p className="text-muted-foreground font-semibold text-lg max-w-2xl leading-relaxed">
+                      If you watch <strong>{show.name}</strong> continuously for 24 hours without taking any breaks, it would take -
+                    </p>
+                  </div>
 
-                <div className="flex flex-wrap gap-4">
-                  <div className="glass-panel p-4 rounded-[1.5rem] flex items-center gap-4 border-white/10 hover:bg-white/5 transition-colors">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                         <Label htmlFor="skip-intros" className="text-[10px] font-black uppercase tracking-wider text-white">Skip Intros</Label>
-                         <Popover>
-                           <PopoverTrigger asChild>
-                             <button className="text-muted-foreground hover:text-primary transition-colors">
-                               <Settings2 className="h-3 w-3" />
-                             </button>
-                           </PopoverTrigger>
-                           <PopoverContent className="w-48 glass-panel border-white/10 p-4">
-                             <div className="space-y-3">
-                               <p className="text-[10px] font-black uppercase tracking-widest text-primary">Intro Duration</p>
-                               <div className="flex items-center gap-2">
-                                 <Input 
-                                   type="number" 
-                                   value={introDuration} 
-                                   onChange={(e) => setIntroDuration(parseFloat(e.target.value) || 0)}
-                                   className="bg-white/5 border-white/10 h-8 font-black text-xs"
-                                 />
-                                 <span className="text-[10px] font-black text-muted-foreground">MIN</span>
+                  <div className="flex flex-wrap gap-4">
+                    <div className="glass-panel p-4 rounded-[1.5rem] flex items-center gap-4 border-white/10 hover:bg-white/5 transition-colors">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                           <Label htmlFor="skip-intros" className="text-[10px] font-black uppercase tracking-wider text-white">Skip Intros</Label>
+                           <Popover>
+                             <PopoverTrigger asChild>
+                               <button className="text-muted-foreground hover:text-primary transition-colors">
+                                 <Settings2 className="h-3 w-3" />
+                               </button>
+                             </PopoverTrigger>
+                             <PopoverContent className="w-48 glass-panel border-white/10 p-4">
+                               <div className="space-y-3">
+                                 <p className="text-[10px] font-black uppercase tracking-widest text-primary">Intro Duration</p>
+                                 <div className="flex items-center gap-2">
+                                   <Input 
+                                     type="number" 
+                                     value={introDuration} 
+                                     onChange={(e) => setIntroDuration(parseFloat(e.target.value) || 0)}
+                                     className="bg-white/5 border-white/10 h-8 font-black text-xs"
+                                   />
+                                   <span className="text-[10px] font-black text-muted-foreground">MIN</span>
+                                 </div>
                                </div>
-                             </div>
-                           </PopoverContent>
-                         </Popover>
+                             </PopoverContent>
+                           </Popover>
+                        </div>
+                        <p className="text-[9px] text-muted-foreground font-bold">-{introDuration}m / ep</p>
                       </div>
-                      <p className="text-[9px] text-muted-foreground font-bold">-{introDuration}m / ep</p>
+                      <Switch 
+                        id="skip-intros" 
+                        checked={skipIntros} 
+                        onCheckedChange={setSkipIntros}
+                        className="data-[state=checked]:bg-primary"
+                      />
                     </div>
-                    <Switch 
-                      id="skip-intros" 
-                      checked={skipIntros} 
-                      onCheckedChange={setSkipIntros}
-                      className="data-[state=checked]:bg-primary"
-                    />
-                  </div>
-                  <div className="glass-panel p-4 rounded-[1.5rem] flex items-center gap-4 border-white/10 hover:bg-white/5 transition-colors">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <Label htmlFor="skip-credits" className="text-[10px] font-black uppercase tracking-wider text-white">Skip Credits</Label>
-                        <Popover>
-                           <PopoverTrigger asChild>
-                             <button className="text-muted-foreground hover:text-primary transition-colors">
-                               <Settings2 className="h-3 w-3" />
-                             </button>
-                           </PopoverTrigger>
-                           <PopoverContent className="w-48 glass-panel border-white/10 p-4">
-                             <div className="space-y-3">
-                               <p className="text-[10px] font-black uppercase tracking-widest text-primary">Credit Duration</p>
-                               <div className="flex items-center gap-2">
-                                 <Input 
-                                   type="number" 
-                                   value={creditsDuration} 
-                                   onChange={(e) => setCreditsDuration(parseFloat(e.target.value) || 0)}
-                                   className="bg-white/5 border-white/10 h-8 font-black text-xs"
-                                 />
-                                 <span className="text-[10px] font-black text-muted-foreground">MIN</span>
+                    <div className="glass-panel p-4 rounded-[1.5rem] flex items-center gap-4 border-white/10 hover:bg-white/5 transition-colors">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Label htmlFor="skip-credits" className="text-[10px] font-black uppercase tracking-wider text-white">Skip Credits</Label>
+                          <Popover>
+                             <PopoverTrigger asChild>
+                               <button className="text-muted-foreground hover:text-primary transition-colors">
+                                 <Settings2 className="h-3 w-3" />
+                               </button>
+                             </PopoverTrigger>
+                             <PopoverContent className="w-48 glass-panel border-white/10 p-4">
+                               <div className="space-y-3">
+                                 <p className="text-[10px] font-black uppercase tracking-widest text-primary">Credit Duration</p>
+                                 <div className="flex items-center gap-2">
+                                   <Input 
+                                     type="number" 
+                                     value={creditsDuration} 
+                                     onChange={(e) => setCreditsDuration(parseFloat(e.target.value) || 0)}
+                                     className="bg-white/5 border-white/10 h-8 font-black text-xs"
+                                   />
+                                   <span className="text-[10px] font-black text-muted-foreground">MIN</span>
+                                 </div>
                                </div>
-                             </div>
-                           </PopoverContent>
-                         </Popover>
+                             </PopoverContent>
+                           </Popover>
+                        </div>
+                        <p className="text-[9px] text-muted-foreground font-bold">-{creditsDuration}m / ep</p>
                       </div>
-                      <p className="text-[9px] text-muted-foreground font-bold">-{creditsDuration}m / ep</p>
+                      <Switch 
+                        id="skip-credits" 
+                        checked={skipCredits} 
+                        onCheckedChange={setSkipCredits}
+                        className="data-[state=checked]:bg-primary"
+                      />
                     </div>
-                    <Switch 
-                      id="skip-credits" 
-                      checked={skipCredits} 
-                      onCheckedChange={setSkipCredits}
-                      className="data-[state=checked]:bg-primary"
-                    />
+                    {timeSavedMinutes > 0 && (
+                      <div className="bg-green-500/10 border border-green-500/20 p-4 rounded-[1.5rem] flex items-center gap-3 animate-in fade-in zoom-in-95">
+                        <div className="bg-green-500/20 p-2 rounded-lg">
+                          <Scissors className="h-4 w-4 text-green-400" />
+                        </div>
+                        <div>
+                          <p className="text-[9px] font-black uppercase tracking-widest text-green-400">Time Saved</p>
+                          <p className="text-sm font-black text-white">{formatSavedTime(timeSavedMinutes)}</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {timeSavedMinutes > 0 && (
-                    <div className="bg-green-500/10 border border-green-500/20 p-4 rounded-[1.5rem] flex items-center gap-3 animate-in fade-in zoom-in-95">
-                      <div className="bg-green-500/20 p-2 rounded-lg">
-                        <Scissors className="h-4 w-4 text-green-400" />
-                      </div>
-                      <div>
-                        <p className="text-[9px] font-black uppercase tracking-widest text-green-400">Time Saved</p>
-                        <p className="text-sm font-black text-white">{formatSavedTime(timeSavedMinutes)}</p>
-                      </div>
-                    </div>
-                  )}
                 </div>
+                
+                <DurationDisplay totalMinutes={totalRuntimeMinutes} />
+              </article>
+              <div className="pt-8 flex justify-end">
+                <Button 
+                  onClick={() => handleExport(durationRef, 'watch-time')} 
+                  disabled={isExporting}
+                  variant="outline" 
+                  className="rounded-2xl border-white/10 text-white font-black hover:bg-white/10 gap-2 h-10 px-4 text-xs"
+                >
+                  {isExporting ? <Loader2 className="h-3 w-3 animate-spin" /> : <Download className="h-3 w-3" />}
+                  {isExporting ? "Saving..." : "Save Stats as Image"}
+                </Button>
               </div>
-              
-              <DurationDisplay totalMinutes={totalRuntimeMinutes} />
-            </article>
+            </div>
             
             <section ref={plannerRef} className="p-12 glass-panel border-white/10 space-y-12 rounded-[3.5rem] binge-card-hover overflow-hidden relative">
               <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 blur-[100px] rounded-full pointer-events-none" aria-hidden="true" />
@@ -402,7 +417,7 @@ export function ShowDetails({ show }: ShowDetailsProps) {
 
               <div className="pt-8 flex justify-end">
                 <Button 
-                  onClick={handleSaveImage} 
+                  onClick={() => handleExport(plannerRef, 'binge-plan')} 
                   disabled={isExporting}
                   variant="outline" 
                   className="rounded-2xl border-white/10 text-white font-black hover:bg-white/10 gap-2 h-12 px-6"
