@@ -5,7 +5,7 @@ import { useState, useMemo, useRef } from "react";
 import { TVShow } from "@/types/tvmaze";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Calendar, PlayCircle, Star, Tv, Clock, Share2, Heart, Sparkles, TrendingUp, Zap, FastForward, Activity, HelpCircle, Download, Loader2, Scissors } from "lucide-react";
+import { Calendar, PlayCircle, Star, Tv, Clock, Share2, Heart, Sparkles, TrendingUp, Zap, FastForward, Activity, HelpCircle, Download, Loader2, Scissors, Settings2 } from "lucide-react";
 import Image from "next/image";
 import { DurationDisplay } from "./duration-display";
 import { Slider } from "@/components/ui/slider";
@@ -16,6 +16,8 @@ import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { toPng } from 'html-to-image';
 import { useToast } from "@/hooks/use-toast";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
 
 interface ShowDetailsProps {
   show: TVShow;
@@ -25,6 +27,8 @@ export function ShowDetails({ show }: ShowDetailsProps) {
   const [hoursPerDay, setHoursPerDay] = useState([3]);
   const [skipIntros, setSkipIntros] = useState(false);
   const [skipCredits, setSkipCredits] = useState(false);
+  const [introDuration, setIntroDuration] = useState(1.5);
+  const [creditsDuration, setCreditsDuration] = useState(2.5);
   const [isExporting, setIsExporting] = useState(false);
   const plannerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -40,19 +44,19 @@ export function ShowDetails({ show }: ShowDetailsProps) {
       let originalRuntime = runtime;
       
       if (runtime > 10) {
-        if (skipIntros) runtime -= 1.5;
-        if (skipCredits) runtime -= 2.5;
+        if (skipIntros) runtime -= introDuration;
+        if (skipCredits) runtime -= creditsDuration;
       }
       
-      saved += (originalRuntime - runtime);
-      return acc + runtime;
+      saved += (originalRuntime - Math.max(0, runtime));
+      return acc + Math.max(0, runtime);
     }, 0);
     
     return { 
       totalRuntimeMinutes: Math.max(0, Math.round(total)), 
       timeSavedMinutes: Math.round(saved) 
     };
-  }, [episodes, show.averageRuntime, skipIntros, skipCredits]);
+  }, [episodes, show.averageRuntime, skipIntros, skipCredits, introDuration, creditsDuration]);
   
   const totalHours = totalRuntimeMinutes / 60;
   const daysToFinish = totalHours > 0 ? Math.ceil(totalHours / hoursPerDay[0]) : 0;
@@ -251,8 +255,31 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                 <div className="flex flex-wrap gap-4">
                   <div className="glass-panel p-4 rounded-[1.5rem] flex items-center gap-4 border-white/10 hover:bg-white/5 transition-colors">
                     <div className="space-y-1">
-                      <Label htmlFor="skip-intros" className="text-[10px] font-black uppercase tracking-wider text-white">Skip Intros</Label>
-                      <p className="text-[9px] text-muted-foreground font-bold">-1.5m / ep</p>
+                      <div className="flex items-center gap-2">
+                         <Label htmlFor="skip-intros" className="text-[10px] font-black uppercase tracking-wider text-white">Skip Intros</Label>
+                         <Popover>
+                           <PopoverTrigger asChild>
+                             <button className="text-muted-foreground hover:text-primary transition-colors">
+                               <Settings2 className="h-3 w-3" />
+                             </button>
+                           </PopoverTrigger>
+                           <PopoverContent className="w-48 glass-panel border-white/10 p-4">
+                             <div className="space-y-3">
+                               <p className="text-[10px] font-black uppercase tracking-widest text-primary">Intro Duration</p>
+                               <div className="flex items-center gap-2">
+                                 <Input 
+                                   type="number" 
+                                   value={introDuration} 
+                                   onChange={(e) => setIntroDuration(parseFloat(e.target.value) || 0)}
+                                   className="bg-white/5 border-white/10 h-8 font-black text-xs"
+                                 />
+                                 <span className="text-[10px] font-black text-muted-foreground">MIN</span>
+                               </div>
+                             </div>
+                           </PopoverContent>
+                         </Popover>
+                      </div>
+                      <p className="text-[9px] text-muted-foreground font-bold">-{introDuration}m / ep</p>
                     </div>
                     <Switch 
                       id="skip-intros" 
@@ -263,8 +290,31 @@ export function ShowDetails({ show }: ShowDetailsProps) {
                   </div>
                   <div className="glass-panel p-4 rounded-[1.5rem] flex items-center gap-4 border-white/10 hover:bg-white/5 transition-colors">
                     <div className="space-y-1">
-                      <Label htmlFor="skip-credits" className="text-[10px] font-black uppercase tracking-wider text-white">Skip Credits</Label>
-                      <p className="text-[9px] text-muted-foreground font-bold">-2.5m / ep</p>
+                      <div className="flex items-center gap-2">
+                        <Label htmlFor="skip-credits" className="text-[10px] font-black uppercase tracking-wider text-white">Skip Credits</Label>
+                        <Popover>
+                           <PopoverTrigger asChild>
+                             <button className="text-muted-foreground hover:text-primary transition-colors">
+                               <Settings2 className="h-3 w-3" />
+                             </button>
+                           </PopoverTrigger>
+                           <PopoverContent className="w-48 glass-panel border-white/10 p-4">
+                             <div className="space-y-3">
+                               <p className="text-[10px] font-black uppercase tracking-widest text-primary">Credit Duration</p>
+                               <div className="flex items-center gap-2">
+                                 <Input 
+                                   type="number" 
+                                   value={creditsDuration} 
+                                   onChange={(e) => setCreditsDuration(parseFloat(e.target.value) || 0)}
+                                   className="bg-white/5 border-white/10 h-8 font-black text-xs"
+                                 />
+                                 <span className="text-[10px] font-black text-muted-foreground">MIN</span>
+                               </div>
+                             </div>
+                           </PopoverContent>
+                         </Popover>
+                      </div>
+                      <p className="text-[9px] text-muted-foreground font-bold">-{creditsDuration}m / ep</p>
                     </div>
                     <Switch 
                       id="skip-credits" 
