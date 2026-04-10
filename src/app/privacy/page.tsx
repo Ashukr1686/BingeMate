@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { MonitorPlay, ChevronLeft, Eye } from "lucide-react";
 
@@ -12,7 +13,7 @@ export default function PrivacyPage() {
             <MonitorPlay className="h-6 w-6 text-white" />
           </div>
           <span className="text-4xl font-logo tracking-wider text-white uppercase">
-            CineBy<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400"> TV</span>
+            the<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Binge</span>
           </span>
         </Link>
         <Link href="/" className="text-sm font-bold text-muted-foreground hover:text-white transition-colors flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/10">
@@ -30,7 +31,7 @@ export default function PrivacyPage() {
             <p className="text-xl text-white font-bold">Your privacy is important to us. Here is how we handle your data.</p>
             
             <h2 className="text-2xl font-black text-white pt-4">1. Data Collection</h2>
-            <p>CineBy TV does not require an account to use. We do not collect personal identification information like names or emails unless you explicitly contact us for support.</p>
+            <p>theBinge does not require an account to use. We do not collect personal identification information like names or emails unless you explicitly contact us for support.</p>
 
             <h2 className="text-2xl font-black text-white pt-4">2. Cookies and Analytics</h2>
             <p>We may use local storage to save your preferences (like the "Skip Intros" setting). We use anonymous analytics to understand how users interact with our binge calculator.</p>
@@ -45,7 +46,7 @@ export default function PrivacyPage() {
       </section>
 
       <footer className="mt-auto border-t border-white/5 py-8 text-center text-muted-foreground text-sm">
-        <p>© {new Date().getFullYear()} CineBy TV • Professional Binge Watch Calculator</p>
+        <p>© {new Date().getFullYear()} theBinge • Professional Binge Watch Calculator</p>
       </footer>
     </main>
   );

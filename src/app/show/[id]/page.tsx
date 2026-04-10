@@ -1,3 +1,4 @@
+
 import { getShowDetails } from "@/lib/tvmaze";
 import { ShowDetails } from "@/components/binge-calculator/show-details";
 import { MonitorPlay, ChevronLeft } from "lucide-react";
@@ -15,15 +16,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!show) {
     return {
-      title: "Show Not Found | CineBy TV",
+      title: "Show Not Found | theBinge",
     };
   }
 
   const cleanSummary = show.summary?.replace(/<[^>]*>?/gm, "").substring(0, 160) || "";
 
   return {
-    title: `How Long To Watch ${show.name} | CineBy TV`,
-    description: `How long does it take to watch ${show.name}? Calculate the total episodes runtime and plan your binge watch schedule with CineBy TV. Total episodes: ${show._embedded?.episodes?.length || 0}.`,
+    title: `How Long To Watch ${show.name} | theBinge`,
+    description: `How long does it take to watch ${show.name}? Calculate the total episodes runtime and plan your binge watch schedule with theBinge. Total episodes: ${show._embedded?.episodes?.length || 0}.`,
     openGraph: {
       title: `How Long To Watch ${show.name}`,
       description: `Find out exactly how long it takes to watch ${show.name} with our series binge calculator and planner.`,
@@ -83,12 +84,12 @@ export default async function ShowPage({ params }: Props) {
 
         {/* Header/Nav */}
         <header className="container mx-auto px-8 md:px-16 lg:px-24 py-10 relative z-50 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group" aria-label="CineBy TV Home">
+          <Link href="/" className="flex items-center gap-3 group" aria-label="theBinge Home">
             <div className="bg-gradient-to-tr from-primary to-fuchsia-600 p-2.5 rounded-xl shadow-lg shadow-primary/30 group-hover:rotate-12 transition-transform">
               <MonitorPlay className="h-6 w-6 text-white" />
             </div>
             <span className="text-4xl font-logo tracking-wider text-white uppercase drop-shadow-[0_2px_15px_rgba(139,92,246,0.4)]">
-              CineBy<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400"> TV</span>
+              the<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Binge</span>
             </span>
           </Link>
           <Link 
@@ -108,7 +109,7 @@ export default async function ShowPage({ params }: Props) {
         {/* Footer */}
         <footer className="mt-auto border-t border-white/5 py-12 relative z-10 bg-black/20">
           <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 text-sm text-muted-foreground font-bold">
-            <p>© {new Date().getFullYear()} CineBy TV. Data via TMDB & TVMaze.</p>
+            <p>© {new Date().getFullYear()} theBinge. Data via TMDB & TVMaze.</p>
             <nav className="flex gap-10">
               <Link href="/terms" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Terms</Link>
               <Link href="/privacy" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Privacy</Link>

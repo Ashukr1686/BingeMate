@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { MonitorPlay, ChevronLeft, HelpCircle, Mail, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,7 @@ export default function SupportPage() {
             <MonitorPlay className="h-6 w-6 text-white" />
           </div>
           <span className="text-4xl font-logo tracking-wider text-white uppercase">
-            CineBy<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400"> TV</span>
+            the<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Binge</span>
           </span>
         </Link>
         <Link href="/" className="text-sm font-bold text-muted-foreground hover:text-white transition-colors flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/10">
@@ -28,7 +29,7 @@ export default function SupportPage() {
               <HelpCircle className="h-8 w-8 text-fuchsia-400" />
             </div>
             <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter">Support Center</h1>
-            <p className="text-xl text-muted-foreground font-medium">Have questions or need help with CineBy TV? We're here for you.</p>
+            <p className="text-xl text-muted-foreground font-medium">Have questions or need help with theBinge? We're here for you.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -38,7 +39,7 @@ export default function SupportPage() {
               </div>
               <h3 className="text-xl font-black text-white">Email Us</h3>
               <p className="text-muted-foreground font-medium">Send us an email and we'll get back to you within 24 hours.</p>
-              <Button className="w-full bg-primary text-white font-black rounded-xl h-12">support@cineby.tv</Button>
+              <Button className="w-full bg-primary text-white font-black rounded-xl h-12">support@thebinge.tv</Button>
             </div>
 
             <div className="glass-panel p-8 rounded-[2.5rem] space-y-4 border-white/10 hover:bg-white/5 transition-colors">
@@ -68,7 +69,7 @@ export default function SupportPage() {
       </section>
 
       <footer className="mt-auto border-t border-white/5 py-8 text-center text-muted-foreground text-sm">
-        <p>© {new Date().getFullYear()} CineBy TV • Professional Binge Watch Calculator</p>
+        <p>© {new Date().getFullYear()} theBinge • Professional Binge Watch Calculator</p>
       </footer>
     </main>
   );

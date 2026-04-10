@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { MonitorPlay, ChevronLeft, ShieldCheck } from "lucide-react";
 
@@ -12,7 +13,7 @@ export default function TermsPage() {
             <MonitorPlay className="h-6 w-6 text-white" />
           </div>
           <span className="text-4xl font-logo tracking-wider text-white uppercase">
-            CineBy<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400"> TV</span>
+            the<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Binge</span>
           </span>
         </Link>
         <Link href="/" className="text-sm font-bold text-muted-foreground hover:text-white transition-colors flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/10">
@@ -27,25 +28,25 @@ export default function TermsPage() {
           </div>
           <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter">Terms of Service</h1>
           <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground font-medium leading-relaxed">
-            <p className="text-xl text-white font-bold">Welcome to CineBy TV. By using our service, you agree to these terms.</p>
+            <p className="text-xl text-white font-bold">Welcome to theBinge. By using our service, you agree to these terms.</p>
             
             <h2 className="text-2xl font-black text-white pt-4">1. Use of Service</h2>
-            <p>CineBy TV provides a tool for calculating TV show binge times based on publicly available data from TMDB and TVMaze. This service is for personal, non-commercial use only.</p>
+            <p>theBinge provides a tool for calculating TV show binge times based on publicly available data from TMDB and TVMaze. This service is for personal, non-commercial use only.</p>
 
             <h2 className="text-2xl font-black text-white pt-4">2. Data Accuracy</h2>
             <p>While we strive for accuracy, binge times are estimates based on average episode runtimes. Actual viewing time may vary based on specific platforms, versions, or viewer habits.</p>
 
             <h2 className="text-2xl font-black text-white pt-4">3. Intellectual Property</h2>
-            <p>All show titles, posters, and metadata are the property of their respective copyright holders. CineBy TV claims no ownership over TV series data or imagery provided via third-party APIs.</p>
+            <p>All show titles, posters, and metadata are the property of their respective copyright holders. theBinge claims no ownership over TV series data or imagery provided via third-party APIs.</p>
 
             <h2 className="text-2xl font-black text-white pt-4">4. Limitation of Liability</h2>
-            <p>CineBy TV is not responsible for any "spoilers" or data discrepancies. We provide this tool "as is" without warranty of any kind.</p>
+            <p>theBinge is not responsible for any "spoilers" or data discrepancies. We provide this tool "as is" without warranty of any kind.</p>
           </div>
         </div>
       </section>
 
       <footer className="mt-auto border-t border-white/5 py-8 text-center text-muted-foreground text-sm">
-        <p>© {new Date().getFullYear()} CineBy TV • Professional Binge Watch Calculator</p>
+        <p>© {new Date().getFullYear()} theBinge • Professional Binge Watch Calculator</p>
       </footer>
     </main>
   );

@@ -1,12 +1,13 @@
+
 import { SearchBar } from "@/components/binge-calculator/search-bar";
 import Link from "next/link";
-import { MonitorPlay, Flame, Sparkles, Search, Clock, Calendar } from "lucide-react";
+import { MonitorPlay, Flame, Search, Clock, Calendar } from "lucide-react";
 import { getTrendingShows } from "@/lib/tmdb";
 import { TrendingGrid } from "@/components/binge-calculator/trending-grid";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'CineBy TV | How Long to Binge a Show? Free Watch Time Calculator',
+  title: 'theBinge | How Long to Binge a Show? Free Watch Time Calculator',
   description: 'Calculate exactly how long it takes to binge your favorite TV shows. Plan your marathon with our total episodes runtime calculator.',
 };
 
@@ -23,12 +24,12 @@ export default async function Home() {
       
       {/* Navigation */}
       <header className="container mx-auto px-6 py-10 relative z-[60] flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 group" aria-label="CineBy TV Home">
+        <Link href="/" className="flex items-center gap-3 group" aria-label="theBinge Home">
           <div className="bg-gradient-to-tr from-primary to-fuchsia-600 p-3 rounded-2xl shadow-xl shadow-primary/20 group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-500">
             <MonitorPlay className="h-7 w-7 text-white" />
           </div>
           <span className="text-4xl font-logo tracking-wider text-white uppercase drop-shadow-[0_2px_15px_rgba(139,92,246,0.4)]">
-            CineBy<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400"> TV</span>
+            the<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Binge</span>
           </span>
         </Link>
         <nav className="hidden md:flex items-center gap-8">
@@ -59,7 +60,7 @@ export default async function Home() {
 
       {/* How It Works Section */}
       <section className="mt-20 py-12 relative z-10" aria-labelledby="how-it-works-title">
-        <h2 id="how-it-works-title" className="sr-only">How CineBy TV Works</h2>
+        <h2 id="how-it-works-title" className="sr-only">How theBinge Works</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mx-auto px-6">
           <article className="glass-panel p-8 rounded-[2.5rem] space-y-4 hover:scale-105 transition-transform duration-500">
             <div className="bg-primary/20 w-14 h-14 rounded-2xl flex items-center justify-center border border-primary/20">
@@ -100,7 +101,7 @@ export default async function Home() {
       {/* Footer */}
       <footer className="mt-auto border-t border-white/5 py-12 relative z-10 bg-black/20">
         <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 text-sm text-muted-foreground font-bold">
-          <p>© {new Date().getFullYear()} CineBy TV. Data via TMDB & TVMaze.</p>
+          <p>© {new Date().getFullYear()} theBinge. Data via TMDB & TVMaze.</p>
           <nav className="flex gap-10">
             <Link href="/terms" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Terms</Link>
             <Link href="/privacy" className="hover:text-primary cursor-pointer transition-colors uppercase tracking-widest text-[10px]">Privacy</Link>
