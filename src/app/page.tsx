@@ -9,6 +9,15 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: 'theBinge | How Long to Binge a Show? Free Watch Time Calculator',
   description: 'Calculate exactly how long it takes to binge your favorite TV shows. Plan your marathon with our total episodes runtime calculator.',
+  openGraph: {
+    title: 'theBinge | How Long to Binge a Show? Free Watch Time Calculator',
+    description: 'Calculate exactly how long it takes to binge your favorite TV shows. Plan your marathon with our total episodes runtime calculator.',
+    images: [{ url: '/thumbnail.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/thumbnail.png'],
+  },
 };
 
 export default async function Home() {

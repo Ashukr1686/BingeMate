@@ -9,6 +9,18 @@ export const metadata: Metadata = {
   icons: {
     icon: '/bingemate.png',
   },
+  openGraph: {
+    title: 'theBinge | Binge Watch Calculator & TV Series Binge Planner',
+    description: 'Calculate exactly how long it takes to binge your favorite TV shows. Plan your marathon with our total episodes runtime calculator.',
+    images: [{ url: '/thumbnail.png', width: 1200, height: 630 }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'theBinge | Binge Watch Calculator & TV Series Binge Planner',
+    description: 'Calculate exactly how long it takes to binge your favorite TV shows. Plan your marathon with our total episodes runtime calculator.',
+    images: ['/thumbnail.png'],
+  },
 };
 
 export default function RootLayout({
