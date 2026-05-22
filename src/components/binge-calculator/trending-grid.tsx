@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -61,11 +62,14 @@ export function TrendingGrid({ initialShows }: TrendingGridProps) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
       {initialShows.map((show, index) => (
-        <article 
+        <a 
           key={`${show.id}-${index}`}
-          className="group relative aspect-[2/3] rounded-[2rem] overflow-hidden border border-white/5 hover:border-primary/50 transition-all duration-500 binge-card-hover cursor-pointer"
-          onClick={() => handleTrendingClick(show)}
-          tabIndex={0}
+          href="#"
+          className="group relative aspect-[2/3] rounded-[2rem] overflow-hidden border border-white/5 hover:border-primary/50 transition-all duration-500 binge-card-hover cursor-pointer block"
+          onClick={(e) => {
+            e.preventDefault();
+            handleTrendingClick(show);
+          }}
           onKeyDown={(e) => e.key === 'Enter' && handleTrendingClick(show)}
           aria-label={`View details for ${show.name}`}
         >
@@ -88,7 +92,7 @@ export function TrendingGrid({ initialShows }: TrendingGridProps) {
               <Loader2 className="h-10 w-10 text-primary animate-spin" />
             </div>
           )}
-        </article>
+        </a>
       ))}
     </div>
   );
