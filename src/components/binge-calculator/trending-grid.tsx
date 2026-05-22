@@ -22,12 +22,22 @@ export function TrendingGrid({ initialShows }: TrendingGridProps) {
     );
   }
 
+  // Helper to create a URL-friendly slug
+  const slugify = (text: string) => {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
       {initialShows.map((show, index) => (
         <Link 
           key={`${show.id}-${index}`}
-          href={`/show/${encodeURIComponent(show.name)}`}
+          href={`/show/${slugify(show.name)}`}
           className="group relative aspect-[2/3] rounded-[2rem] overflow-hidden border border-white/5 hover:border-primary/50 transition-all duration-500 binge-card-hover cursor-pointer block"
           aria-label={`View details for ${show.name}`}
         >

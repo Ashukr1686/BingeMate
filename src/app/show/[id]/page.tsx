@@ -14,7 +14,9 @@ async function resolveShow(id: string) {
   if (!isNaN(numericId)) {
     return await getShowDetails(numericId);
   }
-  return await getShowByName(decodeURIComponent(id));
+  // For slugs like 'breaking-bad', replace hyphens with spaces for better search matching
+  const query = decodeURIComponent(id).replace(/-/g, ' ');
+  return await getShowByName(query);
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
