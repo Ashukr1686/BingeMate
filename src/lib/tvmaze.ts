@@ -14,3 +14,13 @@ export async function getShowDetails(id: number): Promise<TVShow | null> {
   if (!response.ok) return null;
   return response.json();
 }
+
+/**
+ * Fetches a single show by name using TVMaze's single search endpoint.
+ */
+export async function getShowByName(name: string): Promise<TVShow | null> {
+  if (!name) return null;
+  const response = await fetch(`${BASE_URL}/singlesearch/shows?q=${encodeURIComponent(name)}&embed=episodes`);
+  if (!response.ok) return null;
+  return response.json();
+}

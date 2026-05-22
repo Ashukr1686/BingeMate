@@ -1,5 +1,4 @@
-
-import { getShowDetails } from "@/lib/tvmaze";
+import { getShowDetails, getShowByName } from "@/lib/tvmaze";
 import { ShowDetails } from "@/components/binge-calculator/show-details";
 import { MonitorPlay, ChevronLeft } from "lucide-react";
 import Link from "next/link";
@@ -10,9 +9,17 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+async function resolveShow(id: string) {
+  const numericId = parseInt(id);
+  if (!isNaN(numericId)) {
+    return await getShowDetails(numericId);
+  }
+  return await getShowByName(decodeURIComponent(id));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const show = await getShowDetails(parseInt(id));
+  const show = await resolveShow(id);
 
   if (!show) {
     return {
@@ -41,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ShowPage({ params }: Props) {
   const { id } = await params;
-  const show = await getShowDetails(parseInt(id));
+  const show = await resolveShow(id);
 
   if (!show) {
     notFound();

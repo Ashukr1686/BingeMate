@@ -1,52 +1,15 @@
-
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
-import { Loader2, Info } from "lucide-react";
+import { Info } from "lucide-react";
 import { TMDBShow, getTMDBImageUrl } from "@/lib/tmdb";
-import { searchShows } from "@/lib/tvmaze";
 
 interface TrendingGridProps {
   initialShows: TMDBShow[];
 }
 
 export function TrendingGrid({ initialShows }: TrendingGridProps) {
-  const router = useRouter();
-  const [matchingId, setMatchingId] = useState<number | null>(null);
-
-  const handleTrendingClick = async (show: TMDBShow) => {
-    if (matchingId) return; // Prevent multiple clicks
-    
-    setMatchingId(show.id);
-    try {
-      // Try single search first for exact match
-      const response = await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${encodeURIComponent(show.name)}`);
-      if (response.ok) {
-        const data = await response.json();
-        if (data && data.id) {
-          router.push(`/show/${data.id}`);
-          return;
-        }
-      }
-      
-      // Fallback to regular search
-      const results = await searchShows(show.name);
-      if (results.length > 0) {
-        // Find exact name match if possible
-        const bestMatch = results.find(r => r.show.name.toLowerCase() === show.name.toLowerCase());
-        router.push(`/show/${(bestMatch || results[0]).show.id}`);
-      } else {
-        alert("Sorry, we couldn't find the calculation data for this specific show yet.");
-      }
-    } catch (error) {
-      console.error("Matching failed", error);
-    } finally {
-      setMatchingId(null);
-    }
-  };
-
   if (!initialShows || initialShows.length === 0) {
     return (
       <div className="glass-panel p-12 rounded-[3rem] text-center space-y-4">
@@ -62,15 +25,10 @@ export function TrendingGrid({ initialShows }: TrendingGridProps) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
       {initialShows.map((show, index) => (
-        <a 
+        <Link 
           key={`${show.id}-${index}`}
-          href="#"
+          href={`/show/${encodeURIComponent(show.name)}`}
           className="group relative aspect-[2/3] rounded-[2rem] overflow-hidden border border-white/5 hover:border-primary/50 transition-all duration-500 binge-card-hover cursor-pointer block"
-          onClick={(e) => {
-            e.preventDefault();
-            handleTrendingClick(show);
-          }}
-          onKeyDown={(e) => e.key === 'Enter' && handleTrendingClick(show)}
           aria-label={`View details for ${show.name}`}
         >
           <Image 
@@ -86,13 +44,7 @@ export function TrendingGrid({ initialShows }: TrendingGridProps) {
             </span>
             <h3 className="text-lg font-black text-white leading-tight truncate">{show.name}</h3>
           </div>
-          
-          {matchingId === show.id && (
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20">
-              <Loader2 className="h-10 w-10 text-primary animate-spin" />
-            </div>
-          )}
-        </a>
+        </Link>
       ))}
     </div>
   );
